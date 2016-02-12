@@ -14,18 +14,19 @@
         <!-- Bootstrap core CSS -->
         <link rel="stylesheet" href="css/bootstrap.css">
         <link rel="stylesheet" href="css/normalize.css">
-        <link rel="stylesheet" href="css/main.css">
         <link rel="stylesheet" href="css/colorbrewer.css">
+        <link rel="stylesheet" href="css/main.css">
 
         <!--modules css-->
-        <link rel="stylesheet" href="css/pc.css">
-        
+        <link rel="stylesheet" href="css/area.css">
+        <link rel="stylesheet" href="css/map.css">
 
     </head>
-    <body>
+    
+
         <!--[if lt IE 7]>
-            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
+           <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+       <![endif]-->
 
         <!-- Wrap all page content here -->
         <div id="wrap">
@@ -40,7 +41,7 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="#">Lab 2</a>
+                        <a class="navbar-brand" href="#">Lab 3</a>
                     </div>
                 </div>
             </div>
@@ -50,32 +51,44 @@
 
             <div class="container">
                 <!-- row of columns -->
+
                 <br><br><br>
-                <div id="pc" style="height: 80vh"></div>
+
+                <div class="row">
+                    <div class="col-md-6" id ="area" style ="height: 90vh"></div>   
+                    <div class="col-md-6" id ="map" style ="height: 90vh">
+                       <p>
+                            <label>
+                                Magnitude > <span id="slider-value">4</span>
+                            </label>
+                            <input type="range" min="4" max="7" value="4" id="slider">
+                            <input type="number" id="k" value="4" style="float:right;"> 
+                            <input type="button" value="cluster" onclick="map1.cluster(value)" style="float:right;"/>
+                            <label id="info" style="float:right;"></label>
+                        </p> 
+                        
+                    </div>
+
+                </div>                
             </div>
-
-
         </div>
 
-        <div id="footer">
-            <div class="container">
-            </div>
-        </div>
 
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
+        <script src="js/vendor/jquery.min.js"></script>
         <script src="js/vendor/bootstrap.min.js"></script>
         <script src="js/plugins.js"></script>
+        <script src="js/vendor/d3.v3.min.js"></script>
         <script src="js/vendor/modernizr-2.6.2.min.js"></script>
-        <script src="js/vendor/d3.min.js"></script>
         <script src="js/vendor/topojson.v1.min.js"></script>
         <script src="js/vendor/underscore-min.js"></script>
         <script src="js/vendor/colorbrewer.js"></script>
 
         <!--modules js-->
         <script src="js/kmeans.js"></script>
-        <script src="js/pc.js"></script>
+        <script src="js/area.js"></script>
+        <script src="js/map.js"></script>
         <script src="js/main.js"></script>
 
-    </body>
+    
 </html>
+
