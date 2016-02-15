@@ -1,4 +1,5 @@
 function map(data) {
+	'use strict';
 
     var zoom = d3.behavior.zoom()
             .scaleExtent([0.5, 8])
@@ -11,6 +12,7 @@ function map(data) {
             height = mapDiv.height() - margin.top - margin.bottom;
 
     var curr_mag = 4;
+    
 
     var format = d3.time.format.utc("%Y-%m-%dT%H:%M:%S.%LZ");
 
@@ -32,8 +34,9 @@ function map(data) {
             .call(zoom);
 
     var g = svg.append("g");
+
 	var magValue = 4;
-	//tooltip variable
+
 	var tooltip = d3.select("body").append("div")
     .attr("class", "tooltip")
     .style("opacity", 0);
@@ -109,17 +112,17 @@ function map(data) {
 						.style("opacity", 0);
 					} )
 					.on("mouseover", function(d) {
-						if(d3.select(this).style("opacity") != 0){
+						if(d3.select(this).style("opacity") !== 0){
 						tooltip.transition()
 						.duration(200)
-						.style("opacity", .9);
+						.style("opacity", 0.9);
 						tooltip.html("Depth : " + d.properties.depth)
 						.style("left", (d3.event.pageX + 5) + "px")
 						.style("top", (d3.event.pageY - 28) + "px");
 						}
 					});
 					//Complete the code //done
-    };
+    }
 
     //Filters data points according to the specified magnitude
     function filterMag(value) {
@@ -182,7 +185,7 @@ function map(data) {
 						return colors[kmeansRes[j]];
 					}
 				}
-			});
+		});
     };
 
     //Zoom and panning method
@@ -198,7 +201,7 @@ function map(data) {
     //Prints features attributes
     function printInfo(value) {
         var elem = document.getElementById('info');
-        elem.innerHTML = "Place: " + value["place"] + " / Depth: " + value["depth"] + " / Magnitude: " + value["mag"] + "&nbsp;";
+        elem.innerHTML = "Place: " + value['place'] + " / Depth: " + value['depth'] + " / Magnitude: " + value['mag'] + "&nbsp;";
     }
 
 }

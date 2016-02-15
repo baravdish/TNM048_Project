@@ -15,7 +15,8 @@
 		var nCentroids = k;
 		var threshold = 0.1;
 		var counter = 0;
-	
+		var quality = 0;
+
 		if(mode == "normal"){
 
 			var nAxis = 2;
@@ -29,8 +30,6 @@
 				var line = [Number(data[Math.floor(Math.random()*data.length)].lat), Number(data[Math.floor(Math.random()*data.length)].lon)];
 				newCentroids[i] = line;
 			}
-
-			var counter = 0;
 			
 			// Börja om här igen
 			do{
@@ -70,7 +69,6 @@
 					clusters[index].push(lineArray);
 					test_index[i] = index;
 				}
-
 				// Fyll gamla centroid arrayen för senare jämförelse
 				for(var x = 0; x < nCentroids; x++ ){
 					for(var y = 0; y < nAxis; y++){		
@@ -104,7 +102,7 @@
 				}
 				
 				// Beräkna kvaliten på klustret.
-				var quality = 0;
+				quality = 0;
 				for(var i = 0; i < nCentroids; i++){
 					for(var j = 0; j < newCentroids[i].length; j++){
 						//console.log(oldCentroids[i][j] - newCentroids[i][j] + " = " + oldCentroids[i][j] + " - " + newCentroids[i][j]);
@@ -114,7 +112,7 @@
 			
 			//console.log("quality = " + quality);
 			counter++;
-			}while( (quality > threshold) && (counter < 20) )
+			}while( (quality > threshold) && (counter < 20) );
 
 			return test_index;
 		}else if(mode <= 7){
@@ -147,9 +145,6 @@
 					var index;
 						
 					for(var j = 0; j < newCentroids.length; j++){
-						
-
-
 						if( Math.sqrt(Math.pow((mag_point - newCentroids[j]),2)) < min){
 							index = j;
 							min = Math.sqrt(Math.pow((mag_point - newCentroids[j]),2));
@@ -158,7 +153,6 @@
 					clusters[index].push(mag_point);
 					test_index[i] = index;
 				}
-				//console.log(clusters);
 				
 				// Kopiera över och spara
 				for(var i = 0; i < nCentroids; i++ ){
@@ -265,7 +259,7 @@
 				}
 				//console.log("depth quality = " + summa);
 				counter++;
-			}while(summa > threshold && counter < 20) //new quality calculations
+			}while(summa > threshold && counter < 20); //new quality calculations
 			return test_index;
 		}
 		

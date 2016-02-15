@@ -11,7 +11,6 @@ function area(data) {
 
     //Sets the data format
     var format = d3.time.format.utc("%Y-%m-%dT%H:%M:%S.%LZ");
-	//Complete the code // done?
 
     //Sets the scales 
     var x = d3.time.scale().range([0, width]),
@@ -40,31 +39,17 @@ function area(data) {
 			.y1(function(d) { 
 				return y(d.mag); 
 			});
-			/*.x(function (d) {
-              return 10;//Complete the code //done
-            })
-            .y0(height)
-            .y1(function (d) {
-                return 10;//Complete the code //done
-            });*/
     
     //Creates the small chart        
-        var area2 = d3.svg.area()
-            .interpolate("step")
-			.x(function(d) { 
-				return x2(format.parse(d.time)); 
-			})
-			.y0(height2)
-			.y1(function(d) {
-				return y2(d.mag);
-			});
-			/*.x(function (d) {
-                return 10;//Complete the code //done
-            })
-            .y0(height2)
-            .y1(function (d) {
-                return 10;//Complete the code //done
-            });*/
+    var area2 = d3.svg.area()
+        .interpolate("step")
+		.x(function(d) { 
+			return x2(format.parse(d.time)); 
+		})
+		.y0(height2)
+		.y1(function(d) {
+			return y2(d.mag);
+		});
     
     //Assings the svg canvas to the area div
     var svg = d3.select("#area").append("svg")
@@ -86,16 +71,13 @@ function area(data) {
     var context = svg.append("g")
             .attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
 
-    //Initializes the axis domains for the big chart
-	// x.domain([10,10]);//Complete the code //done
-    //y.domain([4, 10]);//Complete the code //done
-	//console.log(data);
 	x.domain(d3.extent(data.map(function(d) { 
 									return format.parse(d.time); 
 									})));
 	y.domain(d3.extent(data.map(function(d) { 
                                     return (d.mag); 
                                     })));
+
     //Initializes the axis domains for the small chart
     x2.domain(x.domain());
     y2.domain(y.domain());
@@ -136,9 +118,6 @@ function area(data) {
             .attr("y", -6)
             .attr("height", height2 + 7);
     
-  
-     
-
     //Method for brushing
     function brush() {
         x.domain(brush.empty() ? x2.domain() : brush.extent() );
@@ -149,17 +128,4 @@ function area(data) {
 		//map1.cluster();
 		
     }
-	
-	/*function type(d){ //never called, ask "why?"
-		d.id = +d.id;
-		d.time = format.parse(d.time);
-		d.lat = +d.lat;
-		d.lon = +d.lon;
-		d.depth = +d.depth;
-		d.mag = +d.mag;
-		d.place = +d.place;
-		console.log(d);
-		return d;		
-	}*/
-
 }
