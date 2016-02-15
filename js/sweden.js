@@ -3,9 +3,7 @@ function sweden()
 		// TODO: split in several functions and files
 		// TODO: zoom, 
 		// TODO: another area with plot,
-		// TODO: third area with single plot over time 
-		// sass == css
-	
+		// TODO: third area with single plot over time 	
 
 	var single_mun;
 
@@ -31,20 +29,16 @@ function sweden()
 	var svg = d3.select("#sweden").append("svg")
 	    				.attr("width", width)
 	    				.attr("height", height);
+						
 	d3.json("data/swe_mun.topojson", function(error, data) {
-		// swe = new sweden(data);
 		single_mun = topojson.feature(data, data.objects.swe_mun);
 		draw(single_mun);
-		console.log(single_mun);
 	});
 
 	function draw(muns) {
 
-		var mun = svg.selectAll(".mun")
-				   			 .data(muns.features);
-		
-		console.log(muns);
-
+		var mun = svg.selectAll(".mun").data(muns.features);
+	
 		mun.enter()
 			.append("path")
 			.attr("d", path)

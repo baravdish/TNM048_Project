@@ -26,8 +26,60 @@ function barchart(){
 		.attr("height", height + margin.top + margin.bottom)
 	  .append("g")
 		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-	d3.tsv("data/data.tsv", type, function(error, data) {
+	
+	var formatData = [];
+	
+	d3.csv("data/Swedish_Election_2014.csv", function(error, data) {
+		  if (error) throw error;
+		  formatData = format(data);
+		  console.log(formatData);
+   		  draw(data);
+	});
+	
+	function format(data){
+		var formatted = {region_id: 0, region_name: "", party_name: [], votes: []};
+		var format_array = []
+		var j = 0;
+		var compare = data[0].region.split(" ");
+		formatted.region_id = compare[0];
+		if(compare.length == 3){
+			formatted.region_name = compare[1] + " " + compare[2];
+		}else{ 
+			formatted.region_name = compare[1];
+		}
+		formatted.party_name.push(data[0].party);
+		formatted.votes.push(data[0].votes);
+		format_array.push(formatted);
+		
+		for(var i = 1; i <data.length; i++){
+			compare = data[i].region.split(" ");
+			if(format_array[j].region_id == compare[0]){
+				format_array[j].party_name.push(data[i].party);
+				format_array[j].votes.push(data[i].votes);
+			}else{
+				formatted.region_id = compare[0];
+				formatted.region_name = compare[1];
+				formatted.party_name.push(data[i].party);
+				formatted.votes.push(data[i].votes);
+				format_array.push(formatted);
+				j++;				
+			}
+			
+		}
+		return format_array;
+	}
+	
+	function draw(data)
+	{
+		
+	}
+	
+	
+	
+	
+	
+	
+	/*d3.tsv("data/data.tsv", type, function(error, data) {
 	  if (error) throw error;
 
 	  x.domain(data.map(function(d) { return d.letter; }));
@@ -61,5 +113,5 @@ function barchart(){
 	function type(d) {
 	  d.frequency = +d.frequency;
 	  return d;
-	}
+	}*/
 }
