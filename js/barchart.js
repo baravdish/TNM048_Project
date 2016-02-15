@@ -1,5 +1,7 @@
 function barchart(){
 
+	var mapDiv = $("#barchart");
+
 	var margin = {top: 20, right: 20, bottom: 30, left: 40},
 		width = 960 - margin.left - margin.right,
 		height = 500 - margin.top - margin.bottom;
@@ -19,13 +21,13 @@ function barchart(){
 		.orient("left")
 		.ticks(10, "%");
 
-	var svg = d3.select("body").append("svg")
+	var svg = d3.select("#barchart").append("svg")
 		.attr("width", width + margin.left + margin.right)
 		.attr("height", height + margin.top + margin.bottom)
 	  .append("g")
 		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-	d3.tsv("data.tsv", type, function(error, data) {
+	d3.tsv("data/data.tsv", type, function(error, data) {
 	  if (error) throw error;
 
 	  x.domain(data.map(function(d) { return d.letter; }));

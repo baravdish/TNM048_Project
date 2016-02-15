@@ -1,1 +1,2 @@
-var sweden = new sweden();
+var sweden1 = new sweden();
+var barchart1 = new barchart();
