@@ -61,6 +61,6 @@ function sweden()
 					
 					tooltip.transition()
 								 .style("opacity", 0);
-			});
+			}).on("click", function(d) { barchart1.isSelected(d.properties.name);});
 	}
 }
