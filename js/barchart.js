@@ -31,6 +31,7 @@ function barchart(){
 	
 	d3.csv("data/Swedish_Election_2014.csv", function(error, data) {
 		  if (error) throw error;
+		  console.log(data);
 		  formatData = format(data);
 	});
 	var selected_mun;
@@ -39,7 +40,7 @@ function barchart(){
 	{
 		selected_mun = name;
 		draw(formatData);
-	}
+	};
 	
 	function format(data){
 		var formatted = {region_id: 0, region_name: "", info: [  ] };
