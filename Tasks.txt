@@ -7,5 +7,6 @@
 - Filtrera m.h.a. sökfält för kommun
 -- Röstresultatet över hela landet
 - "Facts" rutor, t.ex. Vilken kommun har högsta procentandel på partirörst? etc.
+- Rätt namn till rätt barchart, DONE!!!
 
 - Kontakta Jimmy angående vilken data mining metod vi kan använda på Sweden_elections år 2002-20014. Kmeans ej ok, men vad räknas som kmeans?

@@ -38,7 +38,7 @@ function sweden()
 	function draw(muns) {
 
 		var mun = svg.selectAll(".mun").data(muns.features);
-	
+		var currentColor = "orange";
 		mun.enter()
 			.append("path")
 			.attr("d", path)
@@ -61,6 +61,10 @@ function sweden()
 					
 					tooltip.transition()
 								 .style("opacity", 0);
-			}).on("click", function(d) { barchart1.isSelected(d.properties.name);});
+			}).on("click", function(d) { 
+					d3.select("#barChartText").select("h1").remove();
+					d3.select("#barChartText").append("h1").text(d.properties.name);
+					barchart1.isSelected(d.properties.name);
+								});
 	}
 }

@@ -1,5 +1,7 @@
 function barchart(){
 
+	var colormap = ["#50b4e6","#009933", "#6BB7EC", "#231977", "#83CF39", "#EE2020", "#AF0000", "#DDDD00", "#572B85"];
+
 	var mapDiv = $("#barchart");
 
 	var margin = {top: 20, right: 20, bottom: 30, left: 40},
@@ -119,6 +121,7 @@ function barchart(){
 				   .attr("y", function(d) { 
 									return y(d.votes);  
 								})
+				   .style("fill", function(d,i) {return colormap[i];} )
 				   .attr("height", function(d) {		  
 										return (height - y(d.votes));  
 									});
