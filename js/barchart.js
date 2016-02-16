@@ -19,7 +19,7 @@ function barchart(){
 	var yAxis = d3.svg.axis()
 		.scale(y)
 		.orient("left")
-		.ticks(10, "%");
+		.ticks(5, "%");
 
 	var svg = d3.select("#barchart").append("svg")
 		.attr("width", width + margin.left + margin.right)
@@ -33,45 +33,91 @@ function barchart(){
 		  if (error) throw error;
 		  formatData = format(data);
 		  console.log(formatData);
-   		  draw(data);
+   		  draw(formatData);
 	});
 	
 	function format(data){
-		var formatted = {region_id: 0, region_name: "", party_name: [], votes: []};
+		var formatted = {region_id: 0, region_name: "", info: [  ] };
 		var format_array = []
 		var j = 0;
 		var compare = data[0].region.split(" ");
-		formatted.region_id = compare[0];
+		formatted.region_id = Number(compare[0]);
 		if(compare.length == 3){
 			formatted.region_name = compare[1] + " " + compare[2];
 		}else{ 
 			formatted.region_name = compare[1];
 		}
-		formatted.party_name.push(data[0].party);
-		formatted.votes.push(data[0].votes);
+		formatted.info.push({party_name: data[0].party, votes: Number(data[0].votes/100) } );
+		/*party_name.push(data[0].party);
+		formatted.info.votes.push(Number(data[0].votes));*/
 		format_array.push(formatted);
 		
 		for(var i = 1; i <data.length; i++){
 			compare = data[i].region.split(" ");
-			if(format_array[j].region_id == compare[0]){
-				format_array[j].party_name.push(data[i].party);
-				format_array[j].votes.push(data[i].votes);
+			if(Number(format_array[j].region_id) == Number(compare[0])){
+				if(!isNaN(data[i].votes)){
+					format_array[j].info.push({party_name: data[i].party, votes: Number(data[i].votes/100) } );
+					/*format_array[j].info.party_name.push(data[i].party);
+					format_array[j].info.votes.push(Number(data[i].votes));*/
+				}else{}
 			}else{
-				formatted.region_id = compare[0];
+				formatted.region_id = Number(compare[0]);
 				formatted.region_name = compare[1];
-				formatted.party_name.push(data[i].party);
-				formatted.votes.push(data[i].votes);
+				formatted.info.push({party_name: data[i].party, votes: Number(data[i].votes/100) } );
+				/*formatted.info.party_name.push(data[i].party);
+				formatted.info.votes.push(Number(data[i].votes));*/
 				format_array.push(formatted);
 				j++;				
 			}
-			
+		var formatted = {region_id: 0, region_name: "", info: [{party_name: "", votes: 0 }]  };
 		}
 		return format_array;
 	}
 	
 	function draw(data)
 	{
+		//for(var i = 0; i <data.length; i++){
 		
+			x.domain(data[0].info.map(function(d) {return d.party_name; }));
+			y.domain([0, d3.max(data[0].info, function(d) { return d.votes; } ) ] );
+			//y.domain([0, 0.6]);
+			console.log(y.range());
+		//console.log(y(data[0].votes));	
+		
+		svg.append("g")
+		  .attr("class", "x axis")
+		  .attr("transform", "translate(0," + height + ")")
+		  .call(xAxis);
+//console.log(data[0]);
+	    svg.append("g")
+		  .attr("class", "y axis")
+		  .call(yAxis)
+		.append("text")
+		  .attr("transform", "rotate(-90)")
+		  .attr("y", 5)
+		  .attr("dy", ".71em")
+		  .style("text-anchor", "end")
+		  .text("Percent");
+		  
+		console.log(data[0].info);
+		
+		svg.selectAll(".bar")
+		   .data(data[0].info)
+		   .enter().append("rect")
+		   .attr("class", "bar")
+		   .attr("x", function(d) { 
+							//console.log("x(d.party) = " + x(d.party));
+							return x(d.party_name); 
+						})
+		   .attr("width", x.rangeBand())
+		   .attr("y", function(d) { 
+							//console.log("y(d.vote) = " + y(d.vote));
+							return y(d.votes);  
+						})
+		   .attr("height", function(d) {		  
+								return (height - y(d.votes));  
+							});
+
 	}
 	
 	
