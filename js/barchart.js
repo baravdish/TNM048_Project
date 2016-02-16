@@ -31,7 +31,6 @@ function barchart(){
 	
 	d3.csv("data/Swedish_Election_2014.csv", function(error, data) {
 		  if (error) throw error;
-		  console.log(data);
 		  formatData = format(data);
 	});
 	var selected_mun;
@@ -91,14 +90,9 @@ function barchart(){
 
 
 		for(var i = 0; i <data.length; i++){
-			//console.log("selected_mun == data[i].region_name => " + selected_mun + " == " + data[i].region_name);
-			console.log(selected_mun);
-			console.log(data[i].region_name);
 			if(selected_mun == data[i].region_name){
-			console.log(data[i]);
 				x.domain(data[i].info.map(function(d) {return d.party_name; }));
 				y.domain([0, d3.max(data[i].info, function(d) { return d.votes; } ) ] );
-				console.log(y.range());	
 
 				 svg.append("g")
 					.attr("class", "x axis")
@@ -113,19 +107,16 @@ function barchart(){
 					.attr("dy", ".71em")
 					.style("text-anchor", "end")
 					.text("Percent"); 
-				//console.log(data[i].info);
 				
 				svg.selectAll(".bar")
 				   .data(data[i].info)
 				   .enter().append("rect")
 				   .attr("class", "bar")
 				   .attr("x", function(d) { 
-									//console.log("x(d.party) = " + x(d.party));
 									return x(d.party_name); 
 								})
 				   .attr("width", x.rangeBand())
 				   .attr("y", function(d) { 
-									//console.log("y(d.vote) = " + y(d.vote));
 									return y(d.votes);  
 								})
 				   .attr("height", function(d) {		  
@@ -135,45 +126,4 @@ function barchart(){
 			}
 		}
 	}
-	
-	
-	
-	
-	
-	
-	/*d3.tsv("data/data.tsv", type, function(error, data) {
-	  if (error) throw error;
-
-	  x.domain(data.map(function(d) { return d.letter; }));
-	  y.domain([0, d3.max(data, function(d) { return d.frequency; })]);
-
-	  svg.append("g")
-		  .attr("class", "x axis")
-		  .attr("transform", "translate(0," + height + ")")
-		  .call(xAxis);
-
-	  svg.append("g")
-		  .attr("class", "y axis")
-		  .call(yAxis)
-		.append("text")
-		  .attr("transform", "rotate(-90)")
-		  .attr("y", 6)
-		  .attr("dy", ".71em")
-		  .style("text-anchor", "end")
-		  .text("Frequency");
-
-	  svg.selectAll(".bar")
-		  .data(data)
-		.enter().append("rect")
-		  .attr("class", "bar")
-		  .attr("x", function(d) { return x(d.letter); })
-		  .attr("width", x.rangeBand())
-		  .attr("y", function(d) { return y(d.frequency); })
-		  .attr("height", function(d) { return height - y(d.frequency); });
-	});
-
-	function type(d) {
-	  d.frequency = +d.frequency;
-	  return d;
-	}*/
 }
