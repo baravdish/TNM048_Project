@@ -88,19 +88,7 @@ function barchart(){
 	{
 		svg.selectAll(".bar").remove();
 		svg.selectAll(".axis").remove();	
-		svg.append("g")
-			.attr("class", "x axis")
-			.attr("transform", "translate(0," + height + ")")
-			.call(xAxis);
-		svg.append("g")
-			.attr("class", "y axis")
-			.call(yAxis)
-		.append("text")
-			.attr("transform", "rotate(-90)")
-			.attr("y", 5)
-			.attr("dy", ".71em")
-			.style("text-anchor", "end")
-			.text("Percent");
+
 
 		for(var i = 0; i <data.length; i++){
 			//console.log("selected_mun == data[i].region_name => " + selected_mun + " == " + data[i].region_name);
@@ -112,7 +100,19 @@ function barchart(){
 				y.domain([0, d3.max(data[i].info, function(d) { return d.votes; } ) ] );
 				console.log(y.range());	
 
-				  
+				 svg.append("g")
+					.attr("class", "x axis")
+					.attr("transform", "translate(0," + height + ")")
+					.call(xAxis);
+				svg.append("g")
+					.attr("class", "y axis")
+					.call(yAxis)
+				.append("text")
+					.attr("transform", "rotate(-90)")
+					.attr("y", 5)
+					.attr("dy", ".71em")
+					.style("text-anchor", "end")
+					.text("Percent"); 
 				//console.log(data[i].info);
 				
 				svg.selectAll(".bar")
