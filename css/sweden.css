@@ -1,5 +1,4 @@
 #sweden{
-	/*background-color:#E0E0E0;*/
 	height:1000px;
     width:800px;
 }
@@ -9,7 +8,5 @@ path {
 }
 
 .mun{
-
 	fill: rgb(0, 20, 151);
-
 }

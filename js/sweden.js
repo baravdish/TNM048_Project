@@ -1,16 +1,13 @@
 function sweden()
 {
-		// TODO: zoom
 		// TODO: third area with single plot over time
 
 	var all_mun;
 	var mun;
+	
 	d3.select("#search").on("input", function(){
 		barchart1.setSelected_Mun(this.value);
 		filterMun(this.value);
-		/*d3.select("#barChartText").select("h1").remove();
-		d3.select("#barChartText").append("h1").text(this.value);*/
-
 	});
 
 	var mapDiv = $("#sweden");
@@ -55,7 +52,6 @@ function sweden()
 			.attr("d", path)
 			.style("stroke", "black")
 			.style("fill", function(d){
-				//console.log(d.properties.name);
 					return barchart1.getColor(d.properties.name);
 			})
 			.on("mouseover", function (d) {
@@ -63,25 +59,14 @@ function sweden()
 				d3.select("#mapmuntext").append("h1").text(d.properties.name);
 				d3.select(this)
 				  .style("fill", "white");
-
-				/*tooltip.transition()
-			  			 .style("opacity", 1);
-
-				tooltip.html("<h1> Municipal: " + d.properties.name + "</h1>")
-							 .style("left", (d3.event.pageX + 20) + "px")
-							 .style("top", (d3.event.pageY - 70) + "px");*/
 			})
 			.on("mouseout", function(d) {
 					
 					d3.select(this)
 						.style("fill", function(d){
-							return barchart1.getColor(d.properties.name);
-						});
-					/*tooltip.transition()
-								 .style("opacity", 0);*/
+											return barchart1.getColor(d.properties.name);
+										});
 			}).on("click", function(d) { 
-					/*d3.select("#barChartText").select("h1").remove();
-					d3.select("#barChartText").append("h1").text(d.properties.name);*/
 					barchart1.isSelected(d.properties.name);
 								});
 	}
@@ -89,17 +74,11 @@ function sweden()
 	function filterMun(value)
 	{
 		mun.style("fill", function(d){ 
-				if (value == d.properties.name){
-					return "white";
-				}
-				else{
-					 return barchart1.getColor(d.properties.name);
-					 }
+				if (value == d.properties.name){return "white";}
+				else{ return barchart1.getColor(d.properties.name);}
 			});
 	}
 	
-	
-	    //Zoom and panning method
     function move() {
 
         var t = d3.event.translate;

@@ -169,12 +169,14 @@ function barchart(){
 										return (height - y(d.votes));  
 									})
 					.on("mouseover", function(d){
-										tooltip.transition()
-											.style("opacity", 1);
 
-										tooltip.html("<h1> " + d.party_name + " : " + Math.round(d.votes*10000)/100 +  "%" + "</h1>")
-											.style("left", (d3.event.pageX + 20) + "px")
-											.style("top", (d3.event.pageY - 70) + "px");
+							tooltip.transition()
+								.style("opacity", 1);
+
+							tooltip.html("<h1> " + d.party_name + " : " + Math.round(d.votes*10000)/100 +  "%" + "</h1>")
+								.style("left", (d3.event.pageX + 20) + "px")
+								.style("top", (d3.event.pageY - 70) + "px");
+								
 					}).on("mouseout", function(d){
 						tooltip.transition()
 						.style("opacity", 0);

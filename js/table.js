@@ -1,5 +1,4 @@
 function table() {
-	var column = 2;
 	
 	var mapDiv = $("#table");
 	
@@ -51,26 +50,9 @@ function table() {
         .enter()
         .append("tr")
         .attr("style", "font-family: Courier") // sets the font style
-            .html(function(d,i,j) { if(j==0){ 
-																	/*console.log(d.color);
-																	d3.select(this).style({"background-color": "yellow"});*/
-																	return "";
-																	}
-																else{
-																	
-																	return d.party;};
-			});//.attr("style", "font-weight:bold");//.attr("style", "font-weight:bold");.attr("style", "font-size:150%");
+            .html(function(d,i,j) { if(j==0){ return "";	} else{ return d.party;};
+			});
 			
 		cells.style("background-color", function(d){d3.select(this).style("stroke-width", 5).style("stroke", "red");
 																		return d.color});
-													/*function(d,i,j) {console.log("hej"); if(j==0){ 
-																	return d.color;
-																	}
-																else{
-																	return "";
-																	}
-			});*/
 }
-
-
- 
