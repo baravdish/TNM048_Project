@@ -13,7 +13,7 @@ function sweden()
 	var mapDiv = $("#sweden");
     
 	var zoom = d3.behavior.zoom()
-						  .scaleExtent([0.5, 8])
+						  .scaleExtent([1, 8])
 						  .on("zoom", move);
 
 	var margin = {top: 20, right: mapDiv.width() /4, bottom: 20, left: 20},
@@ -71,6 +71,13 @@ function sweden()
 								});
 	}
 	
+	var year;
+	this.year = function(value)
+	{
+		console.log("hej");
+		//var k = document.getElementById("k").value;
+	}
+	
 	function filterMun(value)
 	{
 		mun.style("fill", function(d){ 
@@ -84,7 +91,7 @@ function sweden()
         var t = d3.event.translate;
         var s = d3.event.scale;
 
-        zoom.translate(t);
+        //zoom.translate(t);
         svg.style("stroke-width", 1 / s).attr("transform", "translate(" + t + ")scale(" + s + ")");
     }
 

@@ -38,7 +38,7 @@ function barchart(){
 		  if (error) throw error;
 		  formatData = format(data);
 	});
-	/*d3.csv("data/Swedish_Election_2002.csv", function(error, data) {
+	d3.csv("data/Swedish_Election_2002.csv", function(error, data) {
 		  if (error) throw error;
 		  formatData_2002 = format(data);
 	});
@@ -49,7 +49,7 @@ function barchart(){
 	d3.csv("data/Swedish_Election_2010.csv", function(error, data) {
 		  if (error) throw error;
 		  formatData_2010 = format(data);
-	});*/
+	});
 
 	this.isSelected = function(name)
 	{
@@ -139,10 +139,13 @@ function barchart(){
 				x.domain(data[i].info.map(function(d) {return d.party_name; }));
 				y.domain([0, d3.max(data[i].info, function(d) { return d.votes; } ) ] );
 
+				// X-axis
 				 svg.append("g")
 					.attr("class", "x axis")
 					.attr("transform", "translate(0," + height + ")")
 					.call(xAxis);
+				
+				// Y-axis
 				svg.append("g")
 					.attr("class", "y axis")
 					.call(yAxis)
@@ -151,6 +154,7 @@ function barchart(){
 					.attr("y", 5)
 					.attr("dy", ".71em")
 					.style("text-anchor", "end")
+					.style("font-size", "30px")
 					.text("Percent"); 
 				
 				svg.selectAll(".bar")

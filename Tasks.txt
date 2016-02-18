@@ -8,7 +8,6 @@ Klara
 - Kartan blir orange när man söker DONE!!
 
 Att göra
-- "Facts" rutor, t.ex. Vilken kommun har högsta procentandel på partirörst? etc.
 - Lägga till mer data, olika årtal
 - Filtrera data på årtal (slider)
 - Data mining på populäraste parti i respektive kommun
