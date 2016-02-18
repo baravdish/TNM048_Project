@@ -35,6 +35,7 @@ function barchart(){
 		  if (error) throw error;
 		  formatData = format(data);
 	});
+
 	var selected_mun;
 	
 	this.isSelected = function(name)
