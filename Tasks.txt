@@ -1,12 +1,20 @@
-- Zoom eller förstora kartan
-- Färger till barchart
-- Färgskala till de olika partierna
+Klara
+- Zoom eller förstora kartan DONE!! and DONE!!
+- Färger till barchart DONE!!
+- Filtrera m.h.a. sökfält för kommun DONE!!!
+- Rätt namn till rätt barchart, DONE!!!
+- Färgskala till de olika partierna DONE!!
+- Färglägg kartan DONE!!
+- Kartan blir orange när man söker DONE!!
+
+Att göra
+- "Facts" rutor, t.ex. Vilken kommun har högsta procentandel på partirörst? etc.
 - Lägga till mer data, olika årtal
 - Filtrera data på årtal (slider)
 - Data mining på populäraste parti i respektive kommun
-- Filtrera m.h.a. sökfält för kommun
--- Röstresultatet över hela landet
-- "Facts" rutor, t.ex. Vilken kommun har högsta procentandel på partirörst? etc.
-- Rätt namn till rätt barchart, DONE!!!
+
+Buggar vi aldrig kommer orka lösa
+- Zoom
+
 
 - Kontakta Jimmy angående vilken data mining metod vi kan använda på Sweden_elections år 2002-20014. Kmeans ej ok, men vad räknas som kmeans?

@@ -19,6 +19,7 @@
         <!--modules css-->
         <link rel="stylesheet" href="css/barchart.css">
         <link rel="stylesheet" href="css/sweden.css">
+		<link rel="stylesheet" href="css/table.css">
     </head>
     
 
@@ -39,7 +40,9 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="#">---</a>
+                        <h1 style="color:white;"> Search muncipality : 
+						<input id="search" type="text" name="firstname">
+						</h1>
                     </div>
                 </div>
             </div>
@@ -54,11 +57,14 @@
 
                 <div class="row">
                     <div class="col-md-6" id="sweden">
-                        <h1> Sweden </h1>
-                    </div>
+                        <h1 id = "mapmuntext"> </h1>
+                    </div>					
+					<div class="col-md-6" id="table" >
+					</div>
 					<div class="col-md-6" id="barchart">
                         <h1 id = "barChartText">  </h1>
                     </div>
+
                     <!-- <div class="col-md-6" id ="area" style ="height: 90vh"></div>   
                     <div class="col-md-6" id ="map" style ="height: 90vh">
                        <p>
@@ -89,8 +95,13 @@
         <!--modules js-->
         <!--<script src="js/build/output.js"></script>-->
          <script src="js/barchart.js"></script>
-         <script src="js/sweden.js"></script>
-         <script src="js/main.js"></script>
+         <script src="js/sweden.js"></script> 
+		 <script src="js/table.js"></script>
+         
+		 
+		 <script src="js/main.js"></script>
+        
+
     </body>
     
 </html>

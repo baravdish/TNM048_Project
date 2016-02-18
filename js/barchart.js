@@ -3,6 +3,10 @@ function barchart(){
 	var colormap = ["#50b4e6","#009933", "#6BB7EC", "#231977", "#83CF39", "#EE2020", "#AF0000", "#DDDD00", "#572B85"];
 
 	var mapDiv = $("#barchart");
+	
+	var selected_mun;
+	
+	var formatData = [];
 
 	var margin = {top: 20, right: 20, bottom: 30, left: 40},
 		width = 960 - margin.left - margin.right,
@@ -29,19 +33,53 @@ function barchart(){
 	  .append("g")
 		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 	
-	var formatData = [];
 	
 	d3.csv("data/Swedish_Election_2014.csv", function(error, data) {
 		  if (error) throw error;
 		  formatData = format(data);
 	});
+	/*d3.csv("data/Swedish_Election_2002.csv", function(error, data) {
+		  if (error) throw error;
+		  formatData_2002 = format(data);
+	});
+	d3.csv("data/Swedish_Election_2006.csv", function(error, data) {
+		  if (error) throw error;
+		  formatData_2006 = format(data);
+	});
+	d3.csv("data/Swedish_Election_2010.csv", function(error, data) {
+		  if (error) throw error;
+		  formatData_2010 = format(data);
+	});*/
 
-	var selected_mun;
-	
 	this.isSelected = function(name)
 	{
 		selected_mun = name;
 		draw(formatData);
+	};
+	
+	this.setSelected_Mun = function(value){
+		selected_mun = value;
+		draw(formatData);
+	};
+	
+	this.getColor = function(value){
+	
+		for(var i=0; i<formatData.length; i++){
+		var index = 22;
+			if(formatData[i].region_name == value){
+				var max = formatData[i].info[0].votes;
+				for(var j=0; j<formatData[i].info.length; j++){
+					if(max <= formatData[i].info[j].votes){
+						max =  formatData[i].info[j].votes;
+						index = j;
+					}
+				}
+			}
+			if(index != 22){
+				return colormap[index];
+				break;
+			}
+		}
 	};
 	
 	function format(data){
@@ -60,7 +98,6 @@ function barchart(){
 		
 		for(var i = 1; i <data.length; i++){
 			compare = data[i].region.split(" ");
-			//console.log();
 			if(Number(format_array[j].region_id) == Number(compare[0])){
 				if(!isNaN(data[i].votes)){
 					
@@ -80,20 +117,25 @@ function barchart(){
 				formatted = {region_id: 0, region_name: "", info: [{party_name: "", votes: 0 }]  };
 				j++;				
 			}
-		//console.log(formatted.region_name);
 		}
-		//console.log(format_array);
 		return format_array;
 	}
+	
+	var tooltip = d3.select("body").append("div")
+		.attr("class", "tooltip")
+		.style("opacity", 1);
 	
 	function draw(data)
 	{
 		svg.selectAll(".bar").remove();
 		svg.selectAll(".axis").remove();	
 
-
 		for(var i = 0; i <data.length; i++){
 			if(selected_mun == data[i].region_name){
+
+				d3.select("#barChartText").select("h1").remove();
+				d3.select("#barChartText").append("h1").text(selected_mun);
+
 				x.domain(data[i].info.map(function(d) {return d.party_name; }));
 				y.domain([0, d3.max(data[i].info, function(d) { return d.votes; } ) ] );
 
@@ -125,9 +167,21 @@ function barchart(){
 				   .style("fill", function(d,i) {return colormap[i];} )
 				   .attr("height", function(d) {		  
 										return (height - y(d.votes));  
-									});
+									})
+					.on("mouseover", function(d){
+										tooltip.transition()
+											.style("opacity", 1);
+
+										tooltip.html("<h1> " + d.party_name + " : " + Math.round(d.votes*10000)/100 +  "%" + "</h1>")
+											.style("left", (d3.event.pageX + 20) + "px")
+											.style("top", (d3.event.pageY - 70) + "px");
+					}).on("mouseout", function(d){
+						tooltip.transition()
+						.style("opacity", 0);
+					});
 				break;
 			}
 		}
 	}
+	
 }
