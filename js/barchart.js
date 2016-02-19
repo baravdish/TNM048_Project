@@ -6,6 +6,9 @@ function barchart(){
 	
 	var selected_mun;
 	
+	var formatData_2002 = [];
+	var formatData_2006 = [];
+	var formatData_2010 = [];
 	var formatData = [];
 
 	var margin = {top: 20, right: 20, bottom: 30, left: 40},
@@ -51,26 +54,109 @@ function barchart(){
 		  formatData_2010 = format(data);
 	});
 
+	var year = 2014;
+	this.setYear = function()
+	{
+		year = document.getElementById("slider").value;
+		if(selected_mun !== undefined)
+		{
+			switch (Number(year)) {
+			    case 2002:
+			        draw(formatData_2002);
+			        break;
+			    case 2006:
+			        draw(formatData_2006);
+			        break;
+			    case 2010:
+			        draw(formatData_2010);
+			        break;
+			    case 2014:
+			        draw(formatData);
+			        break;
+			    default:
+			        draw(formatData);
+			        break;
+			}
+		}
+	}
+
 	this.isSelected = function(name)
 	{
 		selected_mun = name;
-		draw(formatData);
+		if(selected_mun !== undefined)
+		{
+			var year = document.getElementById("slider").value;
+			switch (Number(year)) {
+			    case 2002:
+			        draw(formatData_2002);
+			        break;
+			    case 2006:
+			        draw(formatData_2006);
+			        break;
+			    case 2010:
+			        draw(formatData_2010);
+			        break;
+			    case 2014:
+			        draw(formatData);
+			        break;
+			    default:
+			        draw(formatData);
+			}
+		}
 	};
-	
+
 	this.setSelected_Mun = function(value){
 		selected_mun = value;
-		draw(formatData);
+		var year = document.getElementById("slider").value;
+		switch (Number(year)) {
+		    case 2002:
+		        draw(formatData_2002);
+		        break;
+		    case 2006:
+		        draw(formatData_2006);
+		        break;
+		    case 2010:
+		        draw(formatData_2010);
+		        break;
+		    case 2014:
+		        draw(formatData);
+		        break;
+		    default:
+		        draw(formatData);
+		} 
 	};
 	
 	this.getColor = function(value){
+		
+		// var year = document.getElementById("slider").value;
+		var year = 2014;
+		switch (Number(year)) {
+		    case 2002:
+		       	return getHighestVote(value, formatData_2002);
+		        break;
+		    case 2006:
+		        return getHighestVote(value, formatData_2006);
+		        break;
+		    case 2010:
+		        return getHighestVote(value, formatData_2010);
+		        break;
+		    case 2014:
+		        return getHighestVote(value, formatData);
+		        break;
+		    default:
+		        return getHighestVote(value, formatData);
+		}
+	};
 	
-		for(var i=0; i<formatData.length; i++){
-		var index = 22;
-			if(formatData[i].region_name == value){
-				var max = formatData[i].info[0].votes;
-				for(var j=0; j<formatData[i].info.length; j++){
-					if(max <= formatData[i].info[j].votes){
-						max =  formatData[i].info[j].votes;
+	function getHighestVote(value, data)
+	{
+		for(var i=0; i<data.length; i++){
+			var index = 22;
+			if(data[i].region_name == value){
+				var max = data[i].info[0].votes;
+				for(var j=0; j<data[i].info.length; j++){
+					if(max <= data[i].info[j].votes){
+						max =  data[i].info[j].votes;
 						index = j;
 					}
 				}
@@ -80,8 +166,8 @@ function barchart(){
 				break;
 			}
 		}
-	};
-	
+	}
+
 	function format(data){
 		var formatted = {region_id: 0, region_name: "", info: [  ] };
 		var format_array = [ ];
@@ -129,6 +215,7 @@ function barchart(){
 	{
 		svg.selectAll(".bar").remove();
 		svg.selectAll(".axis").remove();	
+		svg.selectAll("g").remove();	
 
 		for(var i = 0; i <data.length; i++){
 			if(selected_mun == data[i].region_name){

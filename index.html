@@ -15,7 +15,7 @@
         <link rel="stylesheet" href="css/bootstrap.css">
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="css/main.css">
-
+        <link rel="stylesheet" type="text/css" href="css/d3.slider.css" media="screen" />
         <!--modules css-->
         <link rel="stylesheet" href="css/barchart.css">
         <link rel="stylesheet" href="css/sweden.css">
@@ -58,12 +58,13 @@
                 <div class="row">
                     <div class="col-md-6" id="sweden">
                         <h1 id = "mapmuntext"> </h1>
-                    </div>					
-					<div class="col-md-6" id="table" >
+                    </div>
+
 					
-        
-					</div>
-					<div class="col-md-6" id="barchart">
+
+                    <div class="col-md-6" id="table" > </div>
+
+                    <div class="col-md-6" id="barchart">
 					<!--
 					<form>
 						  <select name="cars">
@@ -76,8 +77,9 @@
 						 <input type="button" value="Visa" onclick="sweden1.year(this)" />
 					  </form>-->
                         <h1 id = "barChartText">  </h1>
+                        <input id ="slider" type="range" min="2002" max="2014" value="2002" step="4" onchange="barchart1.setYear(this.value)" />
                     </div>
-					
+
 					
                     <!-- <div class="col-md-6" id ="area" style ="height: 90vh"></div>   
                     <div class="col-md-6" id ="map" style ="height: 90vh">
@@ -93,7 +95,9 @@
                         
                     </div>
 
-                </div>-->                
+                </div>-->  
+
+
             </div>
         </div>
 
@@ -105,7 +109,7 @@
         <script src="js/vendor/modernizr-2.6.2.min.js"></script>
         <script src="js/vendor/topojson.v1.min.js"></script>
         <script src="js/vendor/underscore-min.js"></script>
-
+        <script src="js/vendor/d3.slider.js"></script>
         <!--modules js-->
         <!--<script src="js/build/output.js"></script>-->
          <script src="js/barchart.js"></script>

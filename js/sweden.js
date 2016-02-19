@@ -9,7 +9,7 @@ function sweden()
 		barchart1.setSelected_Mun(this.value);
 		filterMun(this.value);
 	});
-
+	
 	var mapDiv = $("#sweden");
     
 	var zoom = d3.behavior.zoom()
@@ -39,21 +39,24 @@ function sweden()
             .attr("width", width)
             .attr("height", height)
             .call(zoom);
-						
+	
 	d3.json("data/swe_mun.topojson", function(error, data) {
 		all_mun = topojson.feature(data, data.objects.swe_mun);
 		draw(all_mun);
 	});
 
+
 	function draw(muns) {
+
+		svg.selectAll(".mun").remove();
 
 		mun = svg.selectAll(".mun").data(muns.features);
 		mun.enter()
 			.append("path")
 			.attr("d", path)
 			.style("stroke", "black")
-			.style("fill", function(d){
-					return barchart1.getColor(d.properties.name);
+			.style("fill", function(d,i){
+							return barchart1.getColor(d.properties.name);
 			})
 			.on("mouseover", function (d) {
 				d3.select("#mapmuntext").select("h1").remove();
@@ -71,14 +74,7 @@ function sweden()
 					barchart1.isSelected(d.properties.name);
 								});
 	}
-	
-	var year;
-	this.year = function(value)
-	{
-		console.log("hej");
-		//var k = document.getElementById("k").value;
-	}
-	
+		
 	function filterMun(value)
 	{
 		mun.style("fill", function(d){ 
