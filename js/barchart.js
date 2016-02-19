@@ -154,7 +154,7 @@ function barchart(){
 					.attr("y", 5)
 					.attr("dy", ".71em")
 					.style("text-anchor", "end")
-					.style("font-size", "30px")
+					.style("font-size", "12px")
 					.text("Percent"); 
 				
 				svg.selectAll(".bar")
