@@ -50,9 +50,11 @@ function table() {
         .enter()
         .append("tr")
         .attr("style", "font-family: Courier") // sets the font style
-            .html(function(d,i,j) { if(j==0){ return "";	} else{ return d.party;};
+            .html(function(d,i,j) { if(j===0){ return "";	} else{ return d.party;}
 			});
 			
-		cells.style("background-color", function(d){d3.select(this).style("stroke-width", 5).style("stroke", "red");
-																		return d.color});
+		cells.style("background-color", function(d){
+				d3.select(this).style("stroke-width", 5).style("stroke", "red");
+				return d.color;
+			});
 }

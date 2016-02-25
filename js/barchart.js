@@ -15,8 +15,7 @@ function barchart(){
 		width = 960 - margin.left - margin.right,
 		height = 500 - margin.top - margin.bottom;
 
-	var x = d3.scale.ordinal()
-		.rangeRoundBands([0, width], .1);
+	var x = d3.scale.ordinal().rangeRoundBands([0, width], 0.1);
 
 	var y = d3.scale.linear()
 		.range([height, 0]);
@@ -33,7 +32,7 @@ function barchart(){
 	var svg = d3.select("#barchart").append("svg")
 		.attr("width", width + margin.left + margin.right)
 		.attr("height", height + margin.top + margin.bottom)
-	  .append("g")
+	  	.append("g")
 		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 	
 	
@@ -78,7 +77,7 @@ function barchart(){
 			        break;
 			}
 		}
-	}
+	};
 
 	this.isSelected = function(name)
 	{
@@ -133,16 +132,12 @@ function barchart(){
 		switch (Number(year)) {
 		    case 2002:
 		       	return getHighestVote(value, formatData_2002);
-		        break;
 		    case 2006:
 		        return getHighestVote(value, formatData_2006);
-		        break;
 		    case 2010:
 		        return getHighestVote(value, formatData_2010);
-		        break;
 		    case 2014:
 		        return getHighestVote(value, formatData);
-		        break;
 		    default:
 		        return getHighestVote(value, formatData);
 		}
@@ -163,7 +158,6 @@ function barchart(){
 			}
 			if(index != 22){
 				return colormap[index];
-				break;
 			}
 		}
 	}
@@ -208,9 +202,8 @@ function barchart(){
 	}
 	
 	var tooltip = d3.select("body").append("div")
-		.attr("class", "tooltip")
-		.style("opacity", 1);
-	
+					.attr("class", "tooltip")
+					.style("opacity", 1);
 	function draw(data)
 	{
 		svg.selectAll(".bar").remove();
@@ -259,6 +252,9 @@ function barchart(){
 				   .attr("height", function(d) {		  
 										return (height - y(d.votes));  
 									})
+				   	.on("click", function (d,i) {
+				   		//plot1.draw(d);
+					})
 					.on("mouseover", function(d){
 
 							tooltip.transition()
@@ -267,8 +263,8 @@ function barchart(){
 							tooltip.html("<h1> " + d.party_name + " : " + Math.round(d.votes*10000)/100 +  "%" + "</h1>")
 								.style("left", (d3.event.pageX + 20) + "px")
 								.style("top", (d3.event.pageY - 70) + "px");
-								
-					}).on("mouseout", function(d){
+								})
+					.on("mouseout", function(d){
 						tooltip.transition()
 						.style("opacity", 0);
 					});
@@ -277,4 +273,9 @@ function barchart(){
 		}
 	}
 	
+
+	this.getData = function()
+	{
+		return dota;
+	};
 }
