@@ -7,27 +7,32 @@ function plot()
 	var formatData_2010 = [];
 	var formatData = [];
 	var dataArray = [];
-	d3.csv("data/Swedish_Election_2014.csv", function(error, data) {
-		  if (error) throw error;
-		  formatData = format(data);
-		  dataArray.push(formatData);
-		  formatTime(dataArray);
-	});
+
 	d3.csv("data/Swedish_Election_2002.csv", function(error, data) {
-		  if (error) throw error;
-		  formatData_2002 = format(data);
-		  dataArray.push(formatData_2002);
-	});
-	d3.csv("data/Swedish_Election_2006.csv", function(error, data) {
+	  if (error) throw error;
+	  formatData_2002 = format(data);
+	  dataArray.push(formatData_2002);
+
+		d3.csv("data/Swedish_Election_2006.csv", function(error, data) {
 		  if (error) throw error;
 		  formatData_2006 = format(data);
 		  dataArray.push(formatData_2006);
+		  
+		  d3.csv("data/Swedish_Election_2010.csv", function(error, data) {
+			  if (error) throw error;
+			  formatData_2010 = format(data);
+			  dataArray.push(formatData_2010);
+			  
+			  d3.csv("data/Swedish_Election_2014.csv", function(error, data) {
+			  	if (error) throw error;
+			  	formatData = format(data);
+			  	dataArray.push(formatData);
+			  	formatTime(dataArray);
+				});
+			});
+		});
 	});
-	d3.csv("data/Swedish_Election_2010.csv", function(error, data) {
-		  if (error) throw error;
-		  formatData_2010 = format(data);
-		  dataArray.push(formatData_2010);
-	});
+
 
 	function format(data){
 		var formatted = {region_id: 0, region_name: "", info: [  ] };
@@ -71,15 +76,17 @@ function plot()
 	function formatTime(data) {
 		draw(data);
 	}
+
+
 	var margin = {top: 20, right: 20, bottom: 30, left: 40},
 		width = 960 - margin.left - margin.right,
 		height = 500 - margin.top - margin.bottom;
 
-	// var xScale = d3.scale.linear().range([0, width]).domain([2002,2014]);
-	var xScale = d3.scale.linear().range([0, width]).domain([2000, 2010]);
+	var xScale = d3.scale.linear().range([0, width]).domain([2002,2018]);
+	// var xScale = d3.scale.linear().range([0, width]).domain([2000, 2010]);
 
-	// var yScale = d3.scale.linear().range([height, margin.bottom]).domain([0,1]);
-	var yScale = d3.scale.linear().range([height, margin.bottom]).domain([134, 215]);
+	var yScale = d3.scale.linear().range([height, margin.bottom]).domain([0,1]);
+	// var yScale = d3.scale.linear().range([height, margin.bottom]).domain([134, 215]);
 
 	xAxis = d3.svg.axis()
     				.scale(xScale).ticks(5);
@@ -95,25 +102,15 @@ function plot()
 		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 		
 	function draw(data) {
-          var temp = [{
-              "sale": "202",
-              "year": "2000"
-          }, {
-              "sale": "215",
-              "year": "2002"
-          }, {
-              "sale": "179",
-              "year": "2004"
-          }, {
-              "sale": "199",
-              "year": "2006"
-          }, {
-              "sale": "134",
-              "year": "2008"
-          }, {
-              "sale": "176",
-              "year": "2010"
-          }];
+        var array = [{}];
+        for(var i = 0; i < data.length; i++)
+        {
+	        array[i] = {vote: data[i][0].info[0].votes, year: [2002, 2006, 2010, 2014]};
+        }
+
+        console.log(array);
+				
+				// var correlation = computeCorr(array);
 				// X-axis
 				 svg.append("g")
 				 	.call(xAxis)
@@ -129,22 +126,44 @@ function plot()
 					.attr("dy", ".71em")
 					.style("text-anchor", "end")
 					.style("font-size", "12px")
-					.text("Percent"); 
+					.text("Votes"); 
+
+					svg.selectAll("dot")
+        		.data(array)
+     			 	.enter().append("circle")
+       		  .attr("r", 3.5)
+        		.attr("cx", function(d,i) { return xScale(d.year[i]); })
+        		.attr("cy", function(d) { return yScale(d.vote); });
 
           var lineGen = d3.svg.line()
-              .x(function(d) {
-                  return xScale(d.year);
+              .x(function(d, i) {
+                  return xScale(d.year[i]);
               })
-              .y(function(d) {
-                  return yScale(d.sale);
+              .y(function(d,i) {
+                  return yScale(d.vote);
               })
-              .interpolate("basis");
+              .interpolate("linear");
 
           svg.append('svg:path')
-              .attr('d', lineGen(temp))
+              .attr('d', lineGen(array))
               .attr('stroke', 'green')
               .attr('stroke-width', 2)
               .style('fill', 'none');
+		}
+
+		function computeStandDev(data) {
+		}
+
+		function computeMean(data) {
+			var sum  = 0;
+			for(var i = 0; i < data.length; i++)
+			{
+				sum = sum + data[i].info;
+			}
+		}
+		
+		function computeCorrelation(data){	
+
 		}
 
 }
