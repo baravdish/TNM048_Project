@@ -110,60 +110,107 @@ function plot()
 
         console.log(array);
 				
-				// var correlation = computeCorr(array);
-				// X-axis
-				 svg.append("g")
-				 	.call(xAxis)
-					.attr("transform", "translate(0," + height + ")")
-				.append("text")
-					.text("Year");
-				
-				// Y-axis
-				svg.append("g")
-					.call(yAxis)
-				.append("text")
-					.attr("y", 5)
-					.attr("dy", ".71em")
-					.style("text-anchor", "end")
-					.style("font-size", "12px")
-					.text("Votes"); 
+		// var correlation = computeCorr(array);
+		var mean = computeMean(array);
+		var standardDeviation = computeStandDev(array, mean);
+		var correlation = computeCorrelation(array, mean, standardDeviation);
+		var b = correlation*(standardDeviation[0]/standardDeviation[1]);
+		var A = mean[0] - b*mean[1];
 
-					svg.selectAll("dot")
-        		.data(array)
-     			 	.enter().append("circle")
-       		  .attr("r", 3.5)
-        		.attr("cx", function(d,i) { return xScale(d.year[i]); })
-        		.attr("cy", function(d) { return yScale(d.vote); });
+		// console.log(mean);
+		// console.log(standardDeviation);
+		// console.log(correlation);
+		// console.log(A);
 
-          var lineGen = d3.svg.line()
-              .x(function(d, i) {
-                  return xScale(d.year[i]);
-              })
-              .y(function(d,i) {
-                  return yScale(d.vote);
-              })
-              .interpolate("linear");
+		var predictedPos = b*2018 + A;
+		array.push({vote:predictedPos, year: [2002, 2006, 2010, 2014, 2018]});
+		console.log(array);
 
-          svg.append('svg:path')
-              .attr('d', lineGen(array))
-              .attr('stroke', 'green')
-              .attr('stroke-width', 2)
-              .style('fill', 'none');
+		// X-axis
+		 svg.append("g")
+		 	.call(xAxis)
+			.attr("transform", "translate(0," + height + ")")
+		.append("text")
+			.text("Year");
+		
+		// Y-axis
+		svg.append("g")
+			.call(yAxis)
+		.append("text")
+			.attr("y", 5)
+			.attr("dy", ".71em")
+			.style("text-anchor", "end")
+			.style("font-size", "12px")
+			.text("Votes"); 
+
+		svg.selectAll("dot")
+			.data(array)
+		 		.enter().append("circle")
+	  			.attr("r", 3.5)
+			.attr("cx", function(d,i) { console.log(d); return xScale(d.year[i]); })
+			.attr("cy", function(d) { console.log(d); return yScale(d.vote); });
+
+      	var lineGen = d3.svg.line()
+	          .x(function(d, i) {
+	              return xScale(d.year[i]);
+	          })
+	          .y(function(d,i) {
+	              return yScale(d.vote);
+	          })
+	          .interpolate("linear");
+
+      	svg.append('svg:path')
+	          .attr('d', lineGen(array))
+	          .attr('stroke', 'green')
+	          .attr('stroke-width', 2)
+	          .style('fill', 'none');
 		}
 
-		function computeStandDev(data) {
+		function computeStandDev(data, mean) {
+			var sumX  = 0;
+			var sumY  = 0;
+
+			for(var i = 0; i < data.length; i++)
+			{
+				sumX = sumX + Math.pow(data[i].vote - mean[0],2);
+				sumY = sumY + Math.pow(data[i].year[i] - mean[1],2);
+			}
+			// console.log(data);
+			var varianceX = sumX/(data.length-1);
+			var varianceY = sumY/(data.length-1);
+
+			var standardDeviation = []; 
+			standardDeviation.push(Math.sqrt(varianceX));
+			standardDeviation.push(Math.sqrt(varianceY));
+
+			return standardDeviation;
 		}
 
 		function computeMean(data) {
-			var sum  = 0;
+			var sumX  = 0;
+			var sumY  = 0;
+
 			for(var i = 0; i < data.length; i++)
 			{
-				sum = sum + data[i].info;
+				sumX = sumX + data[i].vote;
+				sumY = sumY + data[i].year[i];
 			}
+			// console.log(data);
+			var mean = [];
+			mean.push(sumX/data.length);
+			mean.push(sumY/data.length);
+			return mean;
 		}
 		
-		function computeCorrelation(data){	
+		function computeCorrelation(data, mean, standardDeviation){	
+			var sum = 0;
+			for(var i = 0; i < data.length; i++)
+			{
+				sum = sum + (data[i].vote - mean[0])*(data[i].year[i] - mean[1]);
+			}
 
+			var r = sum/(data.length * standardDeviation[0]*standardDeviation[1]);
+			return r;
 		}
 
 }
