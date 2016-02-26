@@ -27,12 +27,11 @@ function plot()
 			  	if (error) throw error;
 			  	formatData = format(data);
 			  	dataArray.push(formatData);
-			  	formatTime(dataArray);
+			  	// formatTime(dataArray);
 				});
 			});
 		});
 	});
-
 
 	function format(data){
 		var formatted = {region_id: 0, region_name: "", info: [  ] };
@@ -89,7 +88,7 @@ function plot()
 	// var yScale = d3.scale.linear().range([height, margin.bottom]).domain([134, 215]);
 
 	xAxis = d3.svg.axis()
-    				.scale(xScale).ticks(5);
+    				.scale(xScale).ticks(6);
   
 	yAxis = d3.svg.axis()
 		  		  .scale(yScale)
@@ -101,16 +100,24 @@ function plot()
 	  .append("g")
 		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 		
-	function draw(data) {
-        var array = [{}];
-        for(var i = 0; i < data.length; i++)
-        {
-	        array[i] = {vote: data[i][0].info[0].votes, year: [2002, 2006, 2010, 2014]};
-        }
+	var tooltip = d3.select("body").append("div")
+			.attr("class", "tooltip")
+			.style("opacity", 1);
+					
+	this.draw = function (data,N) {
+		
+		svg.selectAll("g").remove();
+		svg.selectAll("path").remove();
+ 	  svg.selectAll("dot").remove();
+ 	  svg.selectAll("circle").remove();
 
-        console.log(array);
-				
-		// var correlation = computeCorr(array);
+ 	  var array = [{}];
+
+    for(var i = 0; i < data.length; i++)
+    {
+	    array[i] = {vote: data[i][N].info[5].votes, year: [2002, 2006, 2010, 2014]};
+    }
+
 		var mean = computeMean(array);
 		var standardDeviation = computeStandDev(array, mean);
 		var correlation = computeCorrelation(array, mean, standardDeviation);
@@ -124,9 +131,59 @@ function plot()
 
 		var predictedPos = b*2018 + A;
 		array.push({vote:predictedPos, year: [2002, 2006, 2010, 2014, 2018]});
-		console.log(array);
 
-		// X-axis
+		svg.selectAll("dot")
+			.data(array)
+		 	.enter().append("circle")
+	  	.attr("r", 3.5)
+			.attr("cx", function(d,i) { return xScale(d.year[i]); })
+			.attr("cy", function(d) { return yScale(d.vote); });
+
+  	var lineGen = d3.svg.line()
+        .x(function(d, i) {
+            return xScale(d.year[i]);
+        })
+        .y(function(d,i) {
+            return yScale(d.vote);
+        })
+        .interpolate("linear");
+
+		var lineGen2 = d3.svg.line()
+        .x(function(d, i) {
+            return xScale(d.year[i]);
+        })
+        .y(function(d,i) {
+            return yScale(b*d.year[i] + A);
+        })
+        .interpolate("linear");
+
+  	svg.append('svg:path')
+        .attr('d', lineGen(array))
+        .attr('stroke', 'green')
+        .attr('stroke-width', 3)
+        .style('fill', 'none');
+        /*
+				.on("mouseover", function(d){
+
+						tooltip.transition()
+							.style("opacity", 1);
+
+						tooltip.html("<h1> " + d.party_name + " : " + Math.round(d.votes*10000)/100 +  "%" + "</h1>")
+							.style("left", (d3.event.pageX + 20) + "px")
+							.style("top", (d3.event.pageY - 70) + "px");
+							})
+				.on("mouseout", function(d){
+					tooltip.transition()
+					.style("opacity", 0);
+				});*/
+
+		svg.append('svg:path')
+        .attr('d', lineGen2(array))
+        .attr('stroke', 'red')
+        .attr('stroke-width', 2)
+        .style('fill', 'none');
+
+	    // X-axis
 		 svg.append("g")
 		 	.call(xAxis)
 			.attr("transform", "translate(0," + height + ")")
@@ -143,28 +200,7 @@ function plot()
 			.style("font-size", "12px")
 			.text("Votes"); 
 
-		svg.selectAll("dot")
-			.data(array)
-		 		.enter().append("circle")
-	  			.attr("r", 3.5)
-			.attr("cx", function(d,i) { console.log(d); return xScale(d.year[i]); })
-			.attr("cy", function(d) { console.log(d); return yScale(d.vote); });
-
-      	var lineGen = d3.svg.line()
-	          .x(function(d, i) {
-	              return xScale(d.year[i]);
-	          })
-	          .y(function(d,i) {
-	              return yScale(d.vote);
-	          })
-	          .interpolate("linear");
-
-      	svg.append('svg:path')
-	          .attr('d', lineGen(array))
-	          .attr('stroke', 'green')
-	          .attr('stroke-width', 2)
-	          .style('fill', 'none');
-		}
+		};
 
 		function computeStandDev(data, mean) {
 			var sumX  = 0;
@@ -203,7 +239,9 @@ function plot()
 		}
 		
 		function computeCorrelation(data, mean, standardDeviation){	
+			
 			var sum = 0;
+			
 			for(var i = 0; i < data.length; i++)
 			{
 				sum = sum + (data[i].vote - mean[0])*(data[i].year[i] - mean[1]);
@@ -212,5 +250,4 @@ function plot()
 			var r = sum/(data.length * standardDeviation[0]*standardDeviation[1]);
 			return r;
 		}
-
 }

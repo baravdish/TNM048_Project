@@ -84,19 +84,26 @@ function barchart(){
 		selected_mun = name;
 		if(selected_mun !== undefined)
 		{
+			
+			var temp = [];
+			temp.push(formatData_2002);
+			temp.push(formatData_2006);
+			temp.push(formatData_2010);
+			temp.push(formatData);
+
 			var year = document.getElementById("slider").value;
 			switch (Number(year)) {
 			    case 2002:
-			        draw(formatData_2002);
+			        draw(temp, 0);
 			        break;
 			    case 2006:
-			        draw(formatData_2006);
+			        draw(temp, 1);
 			        break;
 			    case 2010:
-			        draw(formatData_2010);
+			        draw(temp, 2);
 			        break;
 			    case 2014:
-			        draw(formatData);
+			        draw(temp, 3);
 			        break;
 			    default:
 			        draw(formatData);
@@ -107,6 +114,7 @@ function barchart(){
 	this.setSelected_Mun = function(value){
 		selected_mun = value;
 		var year = document.getElementById("slider").value;
+
 		switch (Number(year)) {
 		    case 2002:
 		        draw(formatData_2002);
@@ -118,7 +126,7 @@ function barchart(){
 		        draw(formatData_2010);
 		        break;
 		    case 2014:
-		        draw(formatData);
+		        draw(formatData_2014);
 		        break;
 		    default:
 		        draw(formatData);
@@ -204,8 +212,11 @@ function barchart(){
 	var tooltip = d3.select("body").append("div")
 					.attr("class", "tooltip")
 					.style("opacity", 1);
-	function draw(data)
+	function draw(allData, nTime)
 	{
+		console.log(allData);
+		var data = allData[nTime];
+
 		svg.selectAll(".bar").remove();
 		svg.selectAll(".axis").remove();	
 		svg.selectAll("g").remove();	
@@ -268,9 +279,15 @@ function barchart(){
 						tooltip.transition()
 						.style("opacity", 0);
 					});
+
+					selectedMun(allData, i);
 				break;
 			}
 		}
+	}
+
+	function selectedMun(allData,i) {
+		plot1.draw(allData,i);
 	}
 	
 	this.getData = function(){
