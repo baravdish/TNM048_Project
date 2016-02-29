@@ -232,7 +232,7 @@ d3.lasso = function() {
                 close_path_node =calc_close_path.node();
                 var close_path_length = close_path_node.getTotalLength();
                 var close_path_edges = {left:0,right:0};
-                for (var i = 0; i<=close_path_length; i++) {
+                for (i = 0; i<=close_path_length; i++) {
                     var cur_pos = close_path_node.getPointAtLength(i);
                     var prior_pos = close_path_node.getPointAtLength(i-1);
 

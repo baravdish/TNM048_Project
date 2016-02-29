@@ -9,10 +9,10 @@ function sweden()
 	var mouseDown = 0;
 	document.body.onmousedown = function() { 
 	  ++mouseDown;
-	}
+	};
 	document.body.onmouseup = function() {
 	  --mouseDown;
-	}
+	};
 	
 	d3.select("#search").on("input", function(){
 		barchart1.setSelected_Mun(this.value);

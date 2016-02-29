@@ -2,7 +2,7 @@ function barchart(){
 
 	var colormap = ["#50b4e6","#009933", "#6BB7EC", "#231977", "#83CF39", "#EE2020", "#AF0000", "#DDDD00", "#572B85"];
 
-	var mapDiv = $("#barchart");
+	var barDiv = $("#barchart");
 	
 	var selected_mun;
 	
@@ -10,6 +10,7 @@ function barchart(){
 	var formatData_2006 = [];
 	var formatData_2010 = [];
 	var formatData = [];
+	var allData = [];
 
 	var margin = {top: 20, right: 20, bottom: 30, left: 40},
 		width = 900 - margin.left - margin.right,
@@ -56,24 +57,30 @@ function barchart(){
 	var year = 2014;
 	this.setYear = function()
 	{
+		allData = [];
+		allData.push(formatData_2002);
+		allData.push(formatData_2006);
+		allData.push(formatData_2010);
+		allData.push(formatData);
+
 		year = document.getElementById("slider").value;
 		if(selected_mun !== undefined)
 		{
 			switch (Number(year)) {
 			    case 2002:
-			        draw(formatData_2002);
+			        draw(allData, 0);
 			        break;
 			    case 2006:
-			        draw(formatData_2006);
+			        draw(allData, 1);
 			        break;
 			    case 2010:
-			        draw(formatData_2010);
+			        draw(allData, 2);
 			        break;
 			    case 2014:
-			        draw(formatData);
+			        draw(allData, 3);
 			        break;
 			    default:
-			        draw(formatData);
+			        draw(allData, 3);
 			        break;
 			}
 		}
@@ -85,28 +92,34 @@ function barchart(){
 		if(selected_mun !== undefined)
 		{
 			
-			var temp = [];
-			temp.push(formatData_2002);
-			temp.push(formatData_2006);
-			temp.push(formatData_2010);
-			temp.push(formatData);
+			allData = [];
+			allData.push(formatData_2002);
+			allData.push(formatData_2006);
+			allData.push(formatData_2010);
+			allData.push(formatData);
 
 			var year = document.getElementById("slider").value;
 			switch (Number(year)) {
 			    case 2002:
-			        draw(temp, 0);
+			        draw(allData, 0);
+			        // draw(formatData_2002);
 			        break;
 			    case 2006:
-			        draw(temp, 1);
+			        draw(allData, 1);
+			        // draw(formatData_2006);
 			        break;
 			    case 2010:
-			        draw(temp, 2);
+			        draw(allData, 2);
+			        // draw(formatData_2010);
 			        break;
 			    case 2014:
-			        draw(temp, 3);
+			        draw(allData, 3);
+			        // draw(formatData);
 			        break;
 			    default:
-			        draw(formatData);
+			        // draw(formatData);
+			        draw(allData, 3);
+
 			}
 		}
 	};
@@ -115,21 +128,27 @@ function barchart(){
 		selected_mun = value;
 		var year = document.getElementById("slider").value;
 
+			allData = [];
+			allData.push(formatData_2002);
+			allData.push(formatData_2006);
+			allData.push(formatData_2010);
+			allData.push(formatData);
+
 		switch (Number(year)) {
 		    case 2002:
-		        draw(formatData_2002);
+		        draw(allData, 0);
 		        break;
 		    case 2006:
-		        draw(formatData_2006);
+		        draw(allData, 1);
 		        break;
 		    case 2010:
-		        draw(formatData_2010);
+		        draw(allData, 2);
 		        break;
 		    case 2014:
-		        draw(formatData_2014);
+		        draw(allData, 3);
 		        break;
 		    default:
-		        draw(formatData);
+		        draw(allData,3);
 		} 
 	};
 	
@@ -212,9 +231,10 @@ function barchart(){
 	var tooltip = d3.select("body").append("div")
 					.attr("class", "tooltip")
 					.style("opacity", 1);
-	function draw(allData, nTime)
+	function draw(aD, nTime)
 	{
-		console.log(allData);
+		// console.log(allData);
+		// console.log(nTime);
 		var data = allData[nTime];
 
 		svg.selectAll(".bar").remove();
@@ -280,17 +300,22 @@ function barchart(){
 						.style("opacity", 0);
 					});
 
-					selectedMun(allData, i);
+					drawPrediction(allData, i);
 				break;
 			}
 		}
 	}
 
-	function selectedMun(allData,i) {
+	function drawPrediction(allData,i) {
 		plot1.draw(allData,i);
 	}
 	
 	this.getData = function(){
 		return formatData;
+	};
+
+	this.getAllData = function()
+	{
+		return allData;
 	};
 }

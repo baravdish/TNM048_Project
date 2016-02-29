@@ -1,12 +1,15 @@
 function plot()
 {
-	var mapDiv = $("#barchart");
-		
+	var plotDiv = $("#plot");
+	
+	var colormap = ["#50b4e6","#009933", "#6BB7EC", "#231977", "#83CF39", "#EE2020", "#AF0000", "#DDDD00", "#572B85"];
+
 	var formatData_2002 = [];
 	var formatData_2006 = [];
 	var formatData_2010 = [];
 	var formatData = [];
 	var dataArray = [];
+	var predictYear = 2018;
 
 	d3.csv("data/Swedish_Election_2002.csv", function(error, data) {
 	  if (error) throw error;
@@ -78,13 +81,13 @@ function plot()
 
 
 	var margin = {top: 20, right: 20, bottom: 30, left: 40},
-		width = 960 - margin.left - margin.right,
-		height = 500 - margin.top - margin.bottom;
+		width = plotDiv.width() - margin.left - margin.right,
+		height = plotDiv.height() - margin.top - margin.bottom;
 
 	var xScale = d3.scale.linear().range([0, width]).domain([2002,2018]);
 	// var xScale = d3.scale.linear().range([0, width]).domain([2000, 2010]);
 
-	var yScale = d3.scale.linear().range([height, margin.bottom]).domain([0,1]);
+	var yScale = d3.scale.linear().range([height, margin.bottom]).domain([0, 0.6]);
 	// var yScale = d3.scale.linear().range([height, margin.bottom]).domain([134, 215]);
 
 	xAxis = d3.svg.axis()
@@ -97,25 +100,33 @@ function plot()
 	var svg = d3.select("#plot").append("svg")
 		.attr("width", width + margin.left + margin.right)
 		.attr("height", height + margin.top + margin.bottom)
+	  .call(d3.behavior.zoom().scaleExtent([1, 8]).on("zoom", zoom))
 	  .append("g")
 		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-		
+	
+	function zoom() {
+  	svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+	}
+
 	var tooltip = d3.select("body").append("div")
 			.attr("class", "tooltip")
 			.style("opacity", 1);
 					
-	this.draw = function (data,N) {
+	this.draw = function (data,time) {
 		
-		svg.selectAll("g").remove();
-		svg.selectAll("path").remove();
- 	  svg.selectAll("dot").remove();
- 	  svg.selectAll("circle").remove();
+	svg.selectAll("g").remove();
+	svg.selectAll("path").remove();
+ 	svg.selectAll("dot").remove();
+ 	svg.selectAll("circle").remove();
+
+ 		for(var nParty = 0; nParty < data[0][0].info.length; nParty++)
+ 		{
 
  	  var array = [{}];
-
+ 	  var mun = data[0][0].info[nParty].party_name;
     for(var i = 0; i < data.length; i++)
     {
-	    array[i] = {vote: data[i][N].info[5].votes, year: [2002, 2006, 2010, 2014]};
+	    array[i] = {vote: data[i][time].info[nParty].votes, year: [2002, 2006, 2010, 2014], party_name: mun};
     }
 
 		var mean = computeMean(array);
@@ -129,15 +140,31 @@ function plot()
 		// console.log(correlation);
 		// console.log(A);
 
-		var predictedPos = b*2018 + A;
-		array.push({vote:predictedPos, year: [2002, 2006, 2010, 2014, 2018]});
+		var predictedPos = b*predictYear + A;
+		array.push({vote:predictedPos, year: [2002, 2006, 2010, 2014, 2018], party_name: mun});
 
 		svg.selectAll("dot")
 			.data(array)
 		 	.enter().append("circle")
-	  	.attr("r", 3.5)
+	  	.attr("r", 5)
 			.attr("cx", function(d,i) { return xScale(d.year[i]); })
-			.attr("cy", function(d) { return yScale(d.vote); });
+			.attr("cy", function(d) { return yScale(d.vote); })
+			.style("fill", function (d) {
+					return colormap[nParty];
+			})
+			.on("mouseover", function(d){
+
+				tooltip.transition()
+				.style("opacity", 1);
+
+				tooltip.html("<h1> " + d.party_name + ": " +  Math.round(d.vote*10000)/100  + " % " + "</h1>")
+				.style("left", (d3.event.pageX + 20) + "px")
+				.style("top", (d3.event.pageY - 70) + "px");
+			})
+			.on("mouseout", function(d){
+				tooltip.transition().duration(500)
+			.style("opacity", 0);
+			});
 
   	var lineGen = d3.svg.line()
         .x(function(d, i) {
@@ -148,40 +175,30 @@ function plot()
         })
         .interpolate("linear");
 
-		var lineGen2 = d3.svg.line()
+		/*var lineGen2 = d3.svg.line()
         .x(function(d, i) {
             return xScale(d.year[i]);
         })
         .y(function(d,i) {
             return yScale(b*d.year[i] + A);
         })
-        .interpolate("linear");
+        .interpolate("linear");*/
 
-  	svg.append('svg:path')
-        .attr('d', lineGen(array))
-        .attr('stroke', 'green')
-        .attr('stroke-width', 3)
-        .style('fill', 'none');
-        /*
-				.on("mouseover", function(d){
+  	svg.append("svg:path")
+        .attr("d", lineGen(array))
+        .attr("stroke", function (d) {
+        	return colormap[nParty];
+        })
+        .attr("stroke-width", 3)
+        .style("fill", "none");
 
-						tooltip.transition()
-							.style("opacity", 1);
+ 		}
 
-						tooltip.html("<h1> " + d.party_name + " : " + Math.round(d.votes*10000)/100 +  "%" + "</h1>")
-							.style("left", (d3.event.pageX + 20) + "px")
-							.style("top", (d3.event.pageY - 70) + "px");
-							})
-				.on("mouseout", function(d){
-					tooltip.transition()
-					.style("opacity", 0);
-				});*/
-
-		svg.append('svg:path')
+		/*svg.append('svg:path')
         .attr('d', lineGen2(array))
         .attr('stroke', 'red')
         .attr('stroke-width', 2)
-        .style('fill', 'none');
+        .style('fill', 'none');*/
 
 	    // X-axis
 		 svg.append("g")
