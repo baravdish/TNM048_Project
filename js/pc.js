@@ -79,7 +79,7 @@ function pc(){
 		if(typeof votes[0] !== 'undefined'){
 			max = votes[0][1];
 			for(var i=0; i<votes.length; i++){
-				for(var j=1; j<votes[i].length; j++){
+				for(j=1; j< votes[i].length; j++){
 					if(max < votes[i][j]){
 						max = votes[i][j];
 					}
@@ -127,7 +127,7 @@ function pc(){
 				d3.select(this)
 					.style("stroke",  function(d){ return colors(d[0]); })
 					.style("stroke-width", 1);
-				return tooltip.style("opacity", 0)
+				return tooltip.style("opacity", 0);
 			});
 
         // Add a group element for each dimension.
@@ -164,7 +164,7 @@ function pc(){
 
 	this.setSelectedMuns = function(value){
 		update(value);
-	}
+	};
 	
 	var placeholderData = [""];
 	update(placeholderData);

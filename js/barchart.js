@@ -16,7 +16,7 @@ function barchart(){
 		height = 300 - margin.top - margin.bottom;
 
 	var x = d3.scale.ordinal()
-		.rangeRoundBands([0, width], .1);
+		.rangeRoundBands([0, width], 0.1);
 
 	var y = d3.scale.linear()
 		.range([height, 0]);
@@ -78,7 +78,7 @@ function barchart(){
 			        break;
 			}
 		}
-	}
+	};
 
 	this.isSelected = function(name)
 	{
@@ -133,16 +133,12 @@ function barchart(){
 		switch (Number(year)) {
 		    case 2002:
 		       	return getHighestVote(value, formatData_2002);
-		        break;
 		    case 2006:
 		        return getHighestVote(value, formatData_2006);
-		        break;
 		    case 2010:
 		        return getHighestVote(value, formatData_2010);
-		        break;
 		    case 2014:
 		        return getHighestVote(value, formatData);
-		        break;
 		    default:
 		        return getHighestVote(value, formatData);
 		}
@@ -163,7 +159,6 @@ function barchart(){
 			}
 			if(index != 22){
 				return colormap[index];
-				break;
 			}
 		}
 	}
@@ -279,6 +274,6 @@ function barchart(){
 	
 	this.getData = function(){
 		return formatData;
-	}
+	};
 	
 }
