@@ -43,12 +43,12 @@ function sweden()
 						  .on("zoom", move);
 
 
-	var margin = {top: 20, right: mapDiv.width() /4, bottom: 20, left: 20},
+	var margin = {top: 20, right: 0, bottom: 20, left: 20},
 	  	width = (mapDiv.width() - margin.right - margin.left),
 	  	height = mapDiv.height() - margin.top - margin.bottom;
 	
 	var projection = d3.geo.albers()
-	    .center([5, 70])
+	    .center([8, 70])
 	    .rotate([-10, 0])
 	    .parallels([30, 60])
 	    .scale(700 * 5)

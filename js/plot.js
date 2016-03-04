@@ -80,7 +80,7 @@ function plot()
 	}
 
 
-	var margin = {top: 20, right: 20, bottom: 30, left: 40},
+	var margin = {top: 20, right: 70, bottom: 30, left: 40},
 		width = plotDiv.width() - margin.left - margin.right,
 		height = plotDiv.height() - margin.top - margin.bottom;
 
@@ -100,13 +100,8 @@ function plot()
 	var svg = d3.select("#plot").append("svg")
 		.attr("width", width + margin.left + margin.right)
 		.attr("height", height + margin.top + margin.bottom)
-	  .call(d3.behavior.zoom().scaleExtent([1, 8]).on("zoom", zoom))
-	  .append("g")
+		.append("g")
 		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-	
-	function zoom() {
-  	svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
-	}
 
 	var tooltip = d3.select("body").append("div")
 			.attr("class", "tooltip")
@@ -204,9 +199,10 @@ function plot()
 		 svg.append("g")
 		 	.call(xAxis)
 			.attr("transform", "translate(0," + height + ")")
-		.append("text")
-			.text("Year");
-		
+			.append("text")
+			.text("Year")
+			.attr("transform", "translate(" + (width + 20) + "," + 0 + ")");
+	
 		// Y-axis
 		svg.append("g")
 			.call(yAxis)
