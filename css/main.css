@@ -325,4 +325,10 @@ body {
         page-break-after: avoid;
     }
     
+	#components{
+		overflow:hidden;
+	}
+	#sliderbar{
+		float:left;
+	}
 }

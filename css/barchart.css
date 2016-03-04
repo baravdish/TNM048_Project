@@ -1,3 +1,7 @@
+#barchart{
+	background-color: #E6F3F7;
+	padding-right: 40px;
+}
 
 .bar {
   fill: steelblue;
@@ -13,12 +17,13 @@
 
 .axis path,
 .axis line {
-  fill: none;
+  fill: black;
   stroke: #000;
+  stroke-width: 2;
   shape-rendering: crispEdges;
 }
 
 .x.axis path {
-  display: none;
+  display: some;
 }
 

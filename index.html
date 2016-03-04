@@ -21,6 +21,7 @@
 		<link rel="stylesheet" href="css/table.css">
 		<link rel="stylesheet" href="css/lasso.css">
         <link rel="stylesheet" href="css/plot.css">
+		<link rel="stylesheet" href="css/pc.css">
 
     </head>
     
@@ -34,18 +35,21 @@
             <!-- Fixed navbar -->
             <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
                 <div class="container">
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                            <span class="sr-only">Toggle navigation</span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                        <h1 style="color:white;"> Search muncipality : 
-						<input id="search" type="text" name="firstname">
-						</h1>
-                    </div>
-                </div>
+					<div id="components">
+						<div class="navbar-header">
+							<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+								<span class="sr-only">Toggle navigation</span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+							</button>
+							<h1 style="color:white;"> Search muncipality : 
+							<input id="search" type="text" name="firstname">
+							</h1>
+						</div>
+						<div id="sliderbar" style="margin-left:600px"> <h1 style="color:white;">2002 <input id ="slider" type="range" min="2002" max="2014" value="2002" step="4" onchange="barchart1.setYear(this.value)" />2014</h1> </div>
+					</div>
+				</div>
             </div>
 
             <!-- Begin page content -->
@@ -59,14 +63,11 @@
                     <div class="col-md-6" id="sweden">
                         <h1 id = "mapmuntext"> </h1>
                     </div>
-
-                   
 					
-					<div class="col-md-6" id="pc"></div>
+					<div class="col-md-6" id="pc" style="width: 1000px; height: 300;"><h2>Parallellcoordinates Plot</h2></div>
 					
-                    <div class="col-md-6" id="barchart">
+                    <div class="col-md-6" id="barchart" style="width: 1000px; height: 300;">
                         <h1 id = "barChartText">  </h1>
-                       <p>2002 <input id ="slider" type="range" min="2002" max="2014" value="2002" step="4" onchange="barchart1.setYear(this.value)" />2014</p>
 
                        <button onclick="pam1.cluster()">Click me</button>
                     
@@ -74,7 +75,7 @@
 					
 					<div class="col-md-6" id="plot"> <h2> Year 2018 predictions <h2> </div>
 					
-					<div class="col-md-6" id="table" > </div>
+					<div class="col-md-6"  id="table" style = "position:absolute; top:1050px; left:20px;"> </div>
 					
             </div> 
 			
