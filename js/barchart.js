@@ -11,6 +11,8 @@ function barchart(){
 	var formatData_2010 = [];
 	var formatData = [];
 	var allData = [];
+	var activeData = [];
+	var time = 0;
 
 	var margin = {top: 20, right: 20, bottom: 30, left: 40},
 		width = 900 - margin.left - margin.right,
@@ -40,50 +42,60 @@ function barchart(){
 	d3.csv("data/Swedish_Election_2014.csv", function(error, data) {
 		  if (error) throw error;
 		  formatData = format(data);
+		  activeData = formatData;
+		  allData.push(formatData);
 	});
 	d3.csv("data/Swedish_Election_2002.csv", function(error, data) {
 		  if (error) throw error;
 		  formatData_2002 = format(data);
+		  allData.push(formatData_2002);
 	});
 	d3.csv("data/Swedish_Election_2006.csv", function(error, data) {
 		  if (error) throw error;
 		  formatData_2006 = format(data);
+		  allData.push(formatData_2006);
 	});
 	d3.csv("data/Swedish_Election_2010.csv", function(error, data) {
 		  if (error) throw error;
 		  formatData_2010 = format(data);
+		  allData.push(formatData_2010);
 	});
 
 	var year = 2014;
 	this.setYear = function()
 	{
-		allData = [];
-		allData.push(formatData_2002);
-		allData.push(formatData_2006);
-		allData.push(formatData_2010);
-		allData.push(formatData);
-
 		year = document.getElementById("slider").value;
+		console.log(year);
 		if(selected_mun !== undefined)
 		{
-			switch (Number(year)) {
-			    case 2002:
-			        draw(allData, 0);
+			switch(Number(year))
+			{
+				case 2002:
+					activeData = formatData_2002;
+					time = 0;
 			        break;
 			    case 2006:
-			        draw(allData, 1);
+					activeData = formatData_2006;
+					time = 1;
 			        break;
 			    case 2010:
-			        draw(allData, 2);
-			        break;
+					activeData = formatData_2010;
+			        time = 2;
+					break;
 			    case 2014:
-			        draw(allData, 3);
+					activeData = formatData;
+					time = 3;
 			        break;
 			    default:
-			        draw(allData, 3);
+					activeData = formatData;
+					time = 0;
 			        break;
 			}
 		}
+		
+		draw(activeData, allData, time);
+		pc1.updateGraph();
+		sweden1.update();
 	};
 
 	this.isSelected = function(name)
@@ -91,83 +103,17 @@ function barchart(){
 		selected_mun = name;
 		if(selected_mun !== undefined)
 		{
-			
-			allData = [];
-			allData.push(formatData_2002);
-			allData.push(formatData_2006);
-			allData.push(formatData_2010);
-			allData.push(formatData);
-
-			var year = document.getElementById("slider").value;
-			switch (Number(year)) {
-			    case 2002:
-			        draw(allData, 0);
-			        // draw(formatData_2002);
-			        break;
-			    case 2006:
-			        draw(allData, 1);
-			        // draw(formatData_2006);
-			        break;
-			    case 2010:
-			        draw(allData, 2);
-			        // draw(formatData_2010);
-			        break;
-			    case 2014:
-			        draw(allData, 3);
-			        // draw(formatData);
-			        break;
-			    default:
-			        // draw(formatData);
-			        draw(allData, 3);
-
-			}
+			draw(activeData, allData, time);
 		}
 	};
 
 	this.setSelected_Mun = function(value){
 		selected_mun = value;
-		var year = document.getElementById("slider").value;
-
-			allData = [];
-			allData.push(formatData_2002);
-			allData.push(formatData_2006);
-			allData.push(formatData_2010);
-			allData.push(formatData);
-
-		switch (Number(year)) {
-		    case 2002:
-		        draw(allData, 0);
-		        break;
-		    case 2006:
-		        draw(allData, 1);
-		        break;
-		    case 2010:
-		        draw(allData, 2);
-		        break;
-		    case 2014:
-		        draw(allData, 3);
-		        break;
-		    default:
-		        draw(allData,3);
-		} 
+		draw(activeData, allData, time);
 	};
 	
 	this.getColor = function(value){
-		
-		// var year = document.getElementById("slider").value;
-		var year = 2014;
-		switch (Number(year)) {
-		    case 2002:
-		       	return getHighestVote(value, formatData_2002);
-		    case 2006:
-		        return getHighestVote(value, formatData_2006);
-		    case 2010:
-		        return getHighestVote(value, formatData_2010);
-		    case 2014:
-		        return getHighestVote(value, formatData);
-		    default:
-		        return getHighestVote(value, formatData);
-		}
+		return getHighestVote(value, activeData);
 	};
 	
 	function getHighestVote(value, data)
@@ -231,12 +177,8 @@ function barchart(){
 	var tooltip = d3.select("body").append("div")
 					.attr("class", "tooltip")
 					.style("opacity", 1);
-	function draw(aD, nTime)
+	function draw(data, aD, nTime)
 	{
-		// console.log(allData);
-		// console.log(nTime);
-		var data = allData[nTime];
-
 		svg.selectAll(".bar").remove();
 		svg.selectAll(".axis").remove();	
 		svg.selectAll("g").remove();	
@@ -300,7 +242,7 @@ function barchart(){
 						.style("opacity", 0);
 					});
 
-					drawPrediction(allData, i);
+					drawPrediction(aD, i);
 				break;
 			}
 		}
@@ -311,7 +253,7 @@ function barchart(){
 	}
 	
 	this.getData = function(){
-		return formatData;
+		return activeData;
 	};
 
 	this.getAllData = function()

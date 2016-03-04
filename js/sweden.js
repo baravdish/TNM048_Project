@@ -194,5 +194,8 @@ function sweden()
 		  .on("start",lasso_start) // lasso start function
 		  .on("draw",lasso_draw) // lasso draw function
 		  .on("end",lasso_end); // lasso end function
-			
+	
+	this.update = function(){
+		draw(all_mun);
+	};
 }

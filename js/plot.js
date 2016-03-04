@@ -111,7 +111,7 @@ function plot()
 	var tooltip = d3.select("body").append("div")
 			.attr("class", "tooltip")
 			.style("opacity", 1);
-					
+	
 	this.draw = function (data,time) {
 		
 	svg.selectAll("g").remove();

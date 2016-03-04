@@ -22,6 +22,7 @@ function pc(){
         y = {},
 		max;
         
+	var selMuns = [];
 
     var line = d3.svg.line(),
 		axis = d3.svg.axis().orient("left"),
@@ -163,9 +164,12 @@ function pc(){
     }
 
 	this.setSelectedMuns = function(value){
+		selMuns = value;
 		update(value);
 	};
 	
-	var placeholderData = [""];
-	update(placeholderData);
+	this.updateGraph = function(){
+		update(selMuns);
+	}
+	update([""]);
 }
