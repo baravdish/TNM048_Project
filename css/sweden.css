@@ -1,11 +1,11 @@
 #sweden{
-	height:1010px;
+	height:1020px;
     width:500px;
-    background-color: #55AAFF;
+    background-color: #AADDFF;
 }
-	
-path {
-  fill: orange;
+
+.axis path {
+	fill: none;
 }
 
 .mun{

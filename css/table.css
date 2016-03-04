@@ -1,10 +1,9 @@
-.axis path,
-.axis line {
-    fill: none;
-    stroke: grey;
-    stroke-width: 1;
-    shape-rendering: crispEdges;
+#table{
+	width: 400px;
+	height: 400px;
 }
+
+
 
 td {
     padding: 1px 4px;

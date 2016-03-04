@@ -16,7 +16,7 @@ function pc(){
 
     var margin = [30, 10, 30, 30],
         width = 960 - margin[1] - margin[3],
-        height = 300 - margin[0] - margin[2];
+        height = 400 - margin[0] - margin[2];
 
     var x = d3.scale.ordinal().rangePoints([0, width], 1),
         y = {},
@@ -48,6 +48,8 @@ function pc(){
 		
 		//Get data
 		self.data = barchart1.getData();
+		
+		//Filter data
 		self.data = self.data.filter(function(d){
 			for(var i=0; i<muns.length; i++){
 				if(d.region_name === muns[i]){

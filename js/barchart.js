@@ -15,7 +15,7 @@ function barchart(){
 	var time = 0;
 
 	var margin = {top: 20, right: 20, bottom: 30, left: 40},
-		width = 900 - margin.left - margin.right,
+		width = 1000 - margin.left - margin.right,
 		height = 300 - margin.top - margin.bottom;
 
 	var x = d3.scale.ordinal().rangeRoundBands([0, width], 0.1);
@@ -65,7 +65,7 @@ function barchart(){
 	this.setYear = function()
 	{
 		year = document.getElementById("slider").value;
-		console.log(year);
+
 		if(selected_mun !== undefined)
 		{
 			switch(Number(year))
@@ -195,15 +195,16 @@ function barchart(){
 				// X-axis
 				 svg.append("g")
 					.attr("class", "x axis")
-					.attr("transform", "translate(0," + height + ")")
-					.call(xAxis);
+					.call(xAxis)
+					.attr("transform", "translate(" + 0 + "," + height + ")");
+
 				
 				// Y-axis
 				svg.append("g")
 					.attr("class", "y axis")
 					.call(yAxis)
 				.append("text")
-					.attr("transform", "rotate(-90)")
+					.attr("transform", "translate(10," + -17 + ")")
 					.attr("y", 5)
 					.attr("dy", ".71em")
 					.style("text-anchor", "end")

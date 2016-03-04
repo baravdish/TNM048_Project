@@ -16,6 +16,7 @@ function sweden()
 	
 	d3.select("#search").on("input", function(){
 		barchart1.setSelected_Mun(this.value);
+		pc1.setSelectedMuns([this.value]);
 		filterMun(this.value);
 	});
 	
@@ -33,16 +34,11 @@ function sweden()
         if (firstChild) { 
             this.parentNode.insertBefore(this, firstChild); 
         } 
-    }); 
-};
+		}); 
+	};
 	
 	var mapDiv = $("#sweden");
     
-	var zoom = d3.behavior.zoom()
-						  .scaleExtent([1, 8])
-						  .on("zoom", move);
-
-
 	var margin = {top: 20, right: 0, bottom: 20, left: 20},
 	  	width = (mapDiv.width() - margin.right - margin.left),
 	  	height = mapDiv.height() - margin.top - margin.bottom;
