@@ -47,7 +47,7 @@
 							<input id="search" type="text" name="firstname">
 							</h1>
 						</div>
-						<div id="sliderbar" style="margin-left:600px"> <h1 style="color:white;">2002 <input id ="slider" type="range" min="2002" max="2014" value="2002" step="4" onchange="barchart1.setYear(this.value)" />2014</h1> </div>
+						<div id="sliderbar" style="margin-left:600px"> <h1 style="color:white;">2002 <input id ="slider" type="range" min="2002" max="2014" value="2002" step="4" onchange="barchart1.setYear(this.value)" />2014</h1> <button onclick="pam1.cluster()">Click me</button> </div>
 					</div>
 				</div>
             </div>
@@ -67,10 +67,7 @@
 					<div class="col-md-6" id="pc" style="width: 1000px; height: 300;"><h2>Parallellcoordinates Plot</h2></div>
 					
                     <div class="col-md-6" id="barchart" style="width: 1000px; height: 300;">
-                        <h1 id = "barChartText">  </h1>
-
-                       <button onclick="pam1.cluster()">Click me</button>
-                    
+                        <h1 id = "barChartText">  </h1>                    
                     </div>		
 					
 					<div class="col-md-6" id="plot"> <h2> Year 2018 predictions <h2> </div>

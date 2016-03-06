@@ -5,12 +5,12 @@ function barchart(){
 	var barDiv = $("#barchart");
 	
 	var selected_mun;
-	
 	var formatData_2002 = [];
 	var formatData_2006 = [];
 	var formatData_2010 = [];
 	var formatData = [];
 	var allData = [];
+	var distanceMatrix = [];
 	var activeData = [];
 	var time = 0;
 
@@ -44,6 +44,7 @@ function barchart(){
 		  formatData = format(data);
 		  activeData = formatData;
 		  allData.push(formatData);
+		  calcDistanceMatrix(formatData);
 	});
 	d3.csv("data/Swedish_Election_2002.csv", function(error, data) {
 		  if (error) throw error;
@@ -61,11 +62,48 @@ function barchart(){
 		  allData.push(formatData_2010);
 	});
 
+// KOLLA OM DET HÄR FUNKAR
+	function calcDistanceMatrix(data) {
+		var nMuns = data.length;
+		for (var i = 0; i < nMuns; i++) {
+			
+			var partiesRow = data[i].info;
+			var row = [];
+			distanceMatrix[i] = [];
+			// console.log(distanceMatrix);
+			// console.log(i);
+			if (partiesRow.length <= 5) {	
+				for (var i = 0; i < nMuns; i++) {
+					row = Array(nMuns);
+				}
+				distanceMatrix[i].push(row);
+				continue; 
+			}
+			
+			for (var j = 0; j < nMuns; j++) {
+
+					var partiesCol = data[j].info;
+				
+					if(partiesCol.length <= 7 ){ continue; }
+				
+					var sum = 0;
+				
+					for (var n = 0; n < partiesCol.length; n++) {
+						sum = Number(sum) + Number(Math.abs(Number(partiesRow[n].votes) - Number(partiesCol[n].votes)));
+					}
+				row.push(Number(sum));
+				// undefined at Bara
+			} // END OF partiesCol
+				distanceMatrix[i].push(row);
+		} // END OF partiesRow
+		console.log(distanceMatrix);
+	}
+
 	var year = 2014;
 	this.setYear = function()
 	{
 		year = document.getElementById("slider").value;
-
+		
 		if(selected_mun !== undefined)
 		{
 			switch(Number(year))
@@ -261,4 +299,8 @@ function barchart(){
 	{
 		return allData;
 	};
+
+	this.getDistanceMatrix = function () {
+		return distanceMatrix;
+	}
 }
