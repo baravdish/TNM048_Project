@@ -73,30 +73,35 @@ function barchart(){
 			// console.log(distanceMatrix);
 			// console.log(i);
 			if (partiesRow.length <= 5) {	
-				for (var i = 0; i < nMuns; i++) {
-					row = Array(nMuns);
-				}
-				distanceMatrix[i].push(row);
-				continue; 
+				// console.log(i);
+				distanceMatrix[i].push(null);
+				continue;
 			}
 			
 			for (var j = 0; j < nMuns; j++) {
 
 					var partiesCol = data[j].info;
 				
-					if(partiesCol.length <= 7 ){ continue; }
-				
-					var sum = 0;
-				
-					for (var n = 0; n < partiesCol.length; n++) {
-						sum = Number(sum) + Number(Math.abs(Number(partiesRow[n].votes) - Number(partiesCol[n].votes)));
+					if(partiesCol.length <= 7 ){ 
+
+						row.push(null);	
+
+					}else{
+						var sum = 0;
+					
+						for (var n = 0; n < partiesCol.length; n++) {
+							sum = Number(sum) + Number(Math.abs(Number(partiesRow[n].votes) - Number(partiesCol[n].votes)));
+						}
+						row.push(Number(sum));	
 					}
-				row.push(Number(sum));
+				
 				// undefined at Bara
 			} // END OF partiesCol
 				distanceMatrix[i].push(row);
 		} // END OF partiesRow
-		console.log(distanceMatrix);
+
+		// TODO: FIX BUG AT i == 96 
+		// console.log(distanceMatrix);
 	}
 
 	var year = 2014;

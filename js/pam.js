@@ -20,18 +20,30 @@ function pam()
   	var clusters = [];
   	var clusterCost = [];
   	var distanceMatrix = barchart1.getDistanceMatrix();
-
+  	// console.log(distanceMatrix[0][0]);
   	// 1. Räkna ut min för medoid n. Spara min. 
   	// 
   	for(var i = 0; i < nClusters; i++)
   	{
-  		medoids.push(allData[Math.floor(Math.random()*nYears)][Math.floor(Math.random()*nMuns)]);
+  		var temp = Math.floor(Math.random()*nYears);
+  		var temp2 = Math.floor(Math.random()*nMuns)
+  		if (temp.info.length <= 5) {
+  			// Should be a while loop. This is (1/291)^2 = 1e-6 chance to hit outlier twice tho
+  			temp = Math.floor(Math.random()*nYears);
+  		}
+  		else if(temp2.info.length <= 5)
+  		{
+  			temp2 = Math.floor(Math.random()*nMuns);
+  		}
+
+  		medoids.push(allData[temp][temp2]);
+
   		clusters[i] = [];
   		clusterCost[i] = [0];
   	}
 
   	// console.log("medoids:");
-  	// console.log(medoids);
+  	console.log(medoids);
  
   	for (var i = 0; i < nMuns; i++){
   		
@@ -65,15 +77,15 @@ function pam()
 
   	} // END OF: for each mun
 
-  	console.log(clusters);
-  	console.log(clusterCost);
+  	// console.log(clusters);
+  	// console.log(clusterCost);
 
   }; // END OF: cluster()
 
   function checkCorruptData(mun) {
   	var isCorrupted = false;
   	for (var i = 0; i < 9; i++) {
-  		if (typeof mun.info[i] == "undefined") {
+  		if (typeof mun.info[i] == "undefined" || typeof mun.info[i] == "null") {
   			isCorrupted = true;
   			break;
   		}
