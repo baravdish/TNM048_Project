@@ -101,7 +101,7 @@ function barchart(){
 		} // END OF partiesRow
 
 		// TODO: FIX BUG AT i == 96 
-		// console.log(distanceMatrix);
+		 // console.log(distanceMatrix[0][0]);
 	}
 
 	var year = 2014;
@@ -230,7 +230,7 @@ function barchart(){
 			if(selected_mun == data[i].region_name){
 
 				d3.select("#barChartText").select("h1").remove();
-				d3.select("#barChartText").append("h1").text(selected_mun);
+				d3.select("#barChartText").append("h1").text(selected_mun + " - " + year);
 
 				x.domain(data[i].info.map(function(d) {return d.party_name; }));
 				y.domain([0, d3.max(data[i].info, function(d) { return d.votes; } ) ] );

@@ -14,37 +14,71 @@ function pam()
   	var muns = allData[currYear];
   	var nMuns = allData[0].length;
   	var nParties = muns[0].info.length;
+    var corruptedDataLimit = 5;
 
   	var nClusters = 2;
   	var medoids = [];
+    var medoidLength = [];
+    var medoidIndex = [];
+    var medoidInfo = [];
+
   	var clusters = [];
-  	var clusterCost = [];
+  	var clusterCost = Array(nClusters, 0);
   	var distanceMatrix = barchart1.getDistanceMatrix();
-  	// console.log(distanceMatrix[0][0]);
   	// 1. Räkna ut min för medoid n. Spara min. 
-  	// 
-  	for(var i = 0; i < nClusters; i++)
-  	{
-  		var temp = Math.floor(Math.random()*nYears);
-  		var temp2 = Math.floor(Math.random()*nMuns)
-  		if (temp.info.length <= 5) {
-  			// Should be a while loop. This is (1/291)^2 = 1e-6 chance to hit outlier twice tho
-  			temp = Math.floor(Math.random()*nYears);
-  		}
-  		else if(temp2.info.length <= 5)
-  		{
-  			temp2 = Math.floor(Math.random()*nMuns);
-  		}
 
-  		medoids.push(allData[temp][temp2]);
+    // MULTIVARIAT??? (AA')X
+    // CLARA SEN ta bara en sample => typ 50 st eller nåt
+    var count = 0;
+    while(count < nClusters)
+    {
+      var idx = Math.floor(Math.random()*nMuns);
+      // Note: Plocka inte två likadana medoids/cluster! 
+      // Svar: De kommer ändå att ändras sen till att hitta optimala punkter
+      if(checkCorruptData(muns[idx]) == true){ continue; }
+      medoids.push(muns[idx]);
+      medoidIndex.push(idx);
+      clusters[count] = [];
+      clusterCost[count] = [0];
+      medoidInfo.push({mun: muns[idx],  index: idx});
+      count++;
+    }
 
-  		clusters[i] = [];
-  		clusterCost[i] = [0];
-  	}
+    console.log(medoidInfo);
 
-  	// console.log("medoids:");
-  	console.log(medoids);
- 
+    for (var i = 0; i < nMuns; i++) {
+
+      var mun = muns[i];
+      if (checkCorruptData(mun) == true) {
+        clusters[0].push(mun); // just put it somewhere until we decide what to do with corrupted data
+        continue;
+      }
+
+      var minDistance = 1000;
+      var idx = 0;
+      for (var n = 0; n < nClusters; n++) {
+
+        var index = Number(medoidInfo[n].index);
+
+        if (index != i) {
+
+          var distance = Number(distanceMatrix[index][0][i]);
+          // console.log(distance);
+          if(distance < minDistance)
+          {
+            minDistance = Number(distanceMatrix[index][0][i]);
+            idx = n;
+          }
+        }
+      } // end of nClusters
+      clusterCost[idx] = Number(clusterCost[idx]) + minDistance;  
+      clusters[idx].push(mun);
+
+    } // end of nMuns
+    
+    console.log(clusters);
+    console.log(clusterCost);
+/* 
   	for (var i = 0; i < nMuns; i++){
   		
   		var mun = muns[i];
@@ -76,7 +110,7 @@ function pam()
   		clusters[index].push(mun);
 
   	} // END OF: for each mun
-
+*/
   	// console.log(clusters);
   	// console.log(clusterCost);
 
