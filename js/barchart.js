@@ -62,7 +62,6 @@ function barchart(){
 		  allData.push(formatData_2010);
 	});
 
-// KOLLA OM DET HÄR FUNKAR
 	function calcDistanceMatrix(data) {
 		var nMuns = data.length;
 		for (var i = 0; i < nMuns; i++) {
