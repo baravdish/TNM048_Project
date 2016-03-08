@@ -4,4 +4,4 @@ var sweden1 = new sweden();
 var table1 = new table();
 var pc1 = new pc();
 var lasso1 = new d3.lasso();
-var pam1 = new pam();
+//var pam1 = new pam();

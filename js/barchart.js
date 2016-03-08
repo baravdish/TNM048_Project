@@ -62,7 +62,8 @@ function barchart(){
 		  allData.push(formatData_2010);
 	});
 
-// KOLLA OM DET HÄR FUNKAR
+	// For PAM
+	/*
 	function calcDistanceMatrix(data) {
 		var nMuns = data.length;
 		for (var i = 0; i < nMuns; i++) {
@@ -98,7 +99,7 @@ function barchart(){
 		} // END OF partiesRow
 		console.log(distanceMatrix);
 	}
-
+*/
 	var year = 2014;
 	this.setYear = function()
 	{
