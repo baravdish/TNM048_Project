@@ -1,0 +1,27 @@
+#sweden{
+	height:1050px;
+    width:500px;
+    background-color: #AADDFF;
+}
+
+.axis path {
+	fill: none;
+}
+
+.mun{
+	fill: rgb(0, 20, 151);
+}
+
+#slider{
+
+	margin-top: 10px;
+	margin-right: 20px;
+
+}
+
+#mapmuntext{
+	width:500px;
+	height:100px;
+	margin-bottom: 0px;
+	margin-top: 0px;
+}

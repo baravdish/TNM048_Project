@@ -1,0 +1,17 @@
+#table{
+	width: 400px;
+	height: 400px;
+}
+
+
+
+td {
+    padding: 1px 4px;
+	color: white;
+	font-weight:bold;
+	font-size: 150%;
+}
+th{
+	padding-top: 30px;
+	font-size:200%;
+}
